@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Garden Scene</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #9fd0ea;
+        }
+
+        .scene {
+            width: 100vw;
+            height: 100vh;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Sun pulse */
+        @keyframes sunAura {
+
+            0%,
+            100% {
+                opacity: 0.55;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.42;
+                transform: scale(1.07);
+            }
+        }
+
+        .sun-aura {
+            transform-box: fill-box;
+            transform-origin: center;
+            animation: sunAura 4s ease-in-out infinite;
+        }
+
+        /* Cloud drift */
+        @keyframes driftL {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(-14px);
+            }
+        }
+
+        @keyframes driftR {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            50% {
+                transform: translateX(13px);
+            }
+        }
+
+        .cloud-l {
+            animation: driftL 18s ease-in-out infinite;
+        }
+
+        .cloud-r {
+            animation: driftR 22s ease-in-out infinite;
+        }
+
+        /* Organic sway variants */
+        @keyframes sway1 {
+
+            0%,
+            100% {
+                transform: rotate(-4deg);
+            }
+
+            50% {
+                transform: rotate(4deg);
+            }
+        }
+
+        @keyframes sway2 {
+
+            0%,
+            100% {
+                transform: rotate(3deg);
+            }
+
+            50% {
+                transform: rotate(-5deg);
+            }
+        }
+
+        @keyframes sway3 {
+
+            0%,
+            100% {
+                transform: rotate(-3deg);
+            }
+
+            50% {
+                transform: rotate(3.5deg);
+            }
+        }
+
+        @keyframes sway4 {
+
+            0%,
+            100% {
+                transform: rotate(2deg);
+            }
+
+            50% {
+                transform: rotate(-4.5deg);
+            }
+        }
+
+        .sw1 {
+            transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: sway1 3.8s ease-in-out infinite;
+        }
+
+        .sw2 {
+            transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: sway2 4.6s ease-in-out infinite;
+        }
+
+        .sw3 {
+            transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: sway3 3.3s ease-in-out infinite;
+        }
+
+        .sw4 {
+            transform-box: fill-box;
+            transform-origin: bottom center;
+            animation: sway4 5.1s ease-in-out infinite;
+        }
+
+        /* Bloom */
+        @keyframes bloom {
+            0% {
+                transform: scale(0) rotate(-15deg);
+                opacity: 0;
+            }
+
+            65% {
+                transform: scale(1.12) rotate(3deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .bl {
+            transform-box: fill-box;
+            transform-origin: center;
+            opacity: 0;
+            animation: bloom 0.85s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+        }
+
+        /* ── Handwritten text reveal ── */
+        @keyframes writeLine1 {
+            0% {
+                stroke-dashoffset: 1800;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes writeLine2 {
+            0% {
+                stroke-dashoffset: 1200;
+            }
+
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes fillFade {
+            0% {
+                fill-opacity: 0;
+            }
+
+            100% {
+                fill-opacity: 1;
+            }
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                filter: drop-shadow(0 0 6px rgba(255, 230, 160, 0.7));
+            }
+
+            50% {
+                filter: drop-shadow(0 0 14px rgba(255, 210, 100, 0.9));
+            }
+        }
+
+        .bday-line1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 36px;
+            font-weight: 700;
+            text-anchor: middle;
+            fill: #fff8e0;
+            fill-opacity: 0;
+            stroke: #fff0b0;
+            stroke-width: 1.2;
+            stroke-dasharray: 1800;
+            stroke-dashoffset: 1800;
+            animation:
+                writeLine1 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards,
+                fillFade 0.6s ease-out 3.1s forwards,
+                glowPulse 3s ease-in-out 3.7s infinite;
+        }
+
+        .bday-line2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 54px;
+            font-weight: 700;
+            text-anchor: middle;
+            fill: #fff8e0;
+            fill-opacity: 0;
+            stroke: #ffc060;
+            stroke-width: 1.4;
+            stroke-dasharray: 1200;
+            stroke-dashoffset: 1200;
+            animation:
+                writeLine2 2.2s cubic-bezier(0.4, 0, 0.2, 1) 3.0s forwards,
+                fillFade 0.6s ease-out 5.1s forwards,
+                glowPulse 3s ease-in-out 5.7s infinite;
+        }
+
+        /* Small decorative flourish dots that appear after text */
+        @keyframes dotPop {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            70% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+
+            100% {
+                opacity: 0.75;
+                transform: scale(1);
+            }
+        }
+
+        .flourish-dot {
+            transform-box: fill-box;
+            transform-origin: center;
+            opacity: 0;
+            animation: dotPop 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scene">
+        <svg viewBox="0 0 390 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+
+                <!-- Sky -->
+                <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#9fd0ea" />
+                    <stop offset="100%" stop-color="#c8ecf8" />
+                </linearGradient>
+
+                <!-- Sun radial glow -->
+                <radialGradient id="gSun" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#f8dc78" />
+                    <stop offset="48%" stop-color="#f5cc62" />
+                    <stop offset="72%" stop-color="#f6d878" stop-opacity="0.3" />
+                    <stop offset="100%" stop-color="#f6d878" stop-opacity="0" />
+                </radialGradient>
+
+                <!-- Mountain -->
+                <linearGradient id="gMtn" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#8aafC6" stop-opacity="0.68" />
+                    <stop offset="100%" stop-color="#aac8da" stop-opacity="0.45" />
+                </linearGradient>
+
+                <!-- Hill layers -->
+                <linearGradient id="gH1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#65bdb3" />
+                    <stop offset="100%" stop-color="#48aca2" />
+                </linearGradient>
+                <linearGradient id="gH2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#38889e" />
+                    <stop offset="100%" stop-color="#287590" />
+                </linearGradient>
+                <linearGradient id="gH3" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#265d78" />
+                    <stop offset="100%" stop-color="#1a4860" />
+                </linearGradient>
+
+                <!-- Foreground dark bushes -->
+                <linearGradient id="gFg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#1c3c55" />
+                    <stop offset="100%" stop-color="#122a40" />
+                </linearGradient>
+
+                <!-- Grain / paper texture filter -->
+                <filter id="grain" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.70" numOctaves="3" stitchTiles="stitch"
+                        result="nz" />
+                    <feColorMatrix type="matrix" values="0 0 0 0 0
+              0 0 0 0 0
+              0 0 0 0 0
+              0 0 0 0.28 0" in="nz" result="mask" />
+                    <feComposite in="mask" in2="SourceGraphic" operator="in" result="grained" />
+                    <feBlend in="SourceGraphic" in2="grained" mode="multiply" />
+                </filter>
+
+                <!-- Soft glow filter for text backdrop -->
+                <filter id="textGlow" x="-20%" y="-30%" width="140%" height="160%">
+                    <feGaussianBlur stdDeviation="8" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+
+                <!-- Subtle text backdrop blur -->
+                <filter id="backdropBlur" x="-10%" y="-20%" width="120%" height="140%">
+                    <feGaussianBlur stdDeviation="12" />
+                </filter>
+
+            </defs>
+
+            <!-- ─── SKY ─────────────────────────────────────────── -->
+            <rect width="390" height="700" fill="url(#gSky)" />
+
+            <!-- ─── SUN ─────────────────────────────────────────── -->
+            <circle class="sun-aura" cx="195" cy="90" r="72" fill="url(#gSun)" opacity="0.55" />
+            <circle cx="195" cy="90" r="45" fill="#f5cc62" filter="url(#grain)" />
+            <circle cx="195" cy="90" r="40" fill="#f8dc7a" opacity="0.65" />
+
+            <!-- ─── CLOUDS ─────────────────────────────────────── -->
+            <g class="cloud-l">
+                <ellipse cx="76" cy="72" rx="34" ry="17" fill="white" opacity="0.9" />
+                <ellipse cx="57" cy="76" rx="22" ry="13" fill="white" opacity="0.9" />
+                <ellipse cx="97" cy="77" rx="20" ry="12" fill="white" opacity="0.9" />
+                <ellipse cx="76" cy="67" rx="27" ry="15" fill="white" />
+            </g>
+            <g class="cloud-r">
+                <ellipse cx="320" cy="64" rx="38" ry="18" fill="white" opacity="0.9" />
+                <ellipse cx="298" cy="68" rx="23" ry="14" fill="white" opacity="0.9" />
+                <ellipse cx="343" cy="69" rx="22" ry="13" fill="white" opacity="0.9" />
+                <ellipse cx="320" cy="59" rx="30" ry="15" fill="white" />
+            </g>
+
+            <!-- ─── MOUNTAINS ─────────────────────────────────── -->
+            <path d="M -5,395 L 88,195 L 195,132 L 302,200 L 395,335 L 395,395 Z" fill="url(#gMtn)"
+                filter="url(#grain)" />
+            <path d="M -5,370 L 74,228 L 158,315 L -5,382 Z" fill="#96b8cc" fill-opacity="0.52" filter="url(#grain)" />
+            <path d="M 395,360 L 312,235 L 248,298 L 395,378 Z" fill="#96b8cc" fill-opacity="0.52"
+                filter="url(#grain)" />
+
+            <!-- ─── ROLLING HILLS ─────────────────────────────── -->
+            <path d="M -5,432
+  Q 45,364 105,384 Q 156,400 195,374
+  Q 240,348 288,374 Q 332,394 395,358
+  L 395,700 L -5,700 Z" fill="url(#gH1)" filter="url(#grain)" />
+
+            <path d="M -5,494
+  Q 55,440 122,458 Q 172,470 216,450
+  Q 264,432 322,454 Q 362,470 395,448
+  L 395,700 L -5,700 Z" fill="url(#gH2)" filter="url(#grain)" />
+
+            <path d="M -5,546
+  Q 62,500 130,518 Q 178,532 228,514
+  Q 274,498 332,518 Q 366,532 395,514
+  L 395,700 L -5,700 Z" fill="url(#gH3)" filter="url(#grain)" />
+
+            <!-- ─── FOREGROUND DARK BUSHES ────────────────────── -->
+            <path d="M -5,618
+  Q 18,582 50,585 Q 72,587 92,574
+  Q 115,560 142,574 Q 162,584 185,570
+  Q 208,556 230,570 Q 254,582 278,570
+  Q 300,558 324,572 Q 347,584 370,572
+  Q 383,566 395,572
+  L 395,700 L -5,700 Z" fill="url(#gFg)" filter="url(#grain)" />
+            <path d="M -5,655
+  Q 28,626 62,630 Q 95,634 124,622
+  Q 154,612 184,624 Q 214,636 246,624
+  Q 276,614 308,626 Q 338,638 370,624
+  Q 383,618 395,622
+  L 395,700 L -5,700 Z" fill="#142c42" filter="url(#grain)" />
+
+            <!-- ═══════════════════════════════════════════════════
+       HANDWRITTEN BIRTHDAY TEXT
+       Positioned centre, above the flower tops (~y 380)
+       ═══════════════════════════════════════════════════ -->
+
+            <!-- Soft luminous halo behind the text -->
+            <ellipse cx="195" cy="360" rx="145" ry="52" fill="#1a3d55" opacity="0.38" filter="url(#backdropBlur)" />
+            <ellipse cx="195" cy="360" rx="130" ry="44" fill="#ffffff" opacity="0.07" />
+
+            <!-- Decorative swirl lines flanking the text (drawn pre-text) -->
+            <path d="M 44,350 Q 52,343 62,350 Q 70,356 78,350" stroke="#fff8c0" stroke-width="1" fill="none" opacity="0"
+                stroke-linecap="round" style="animation: fillFade 0.4s ease 0.5s forwards">
+            </path>
+            <path d="M 312,350 Q 320,343 330,350 Q 338,356 346,350" stroke="#fff8c0" stroke-width="1" fill="none"
+                opacity="0" stroke-linecap="round" style="animation: fillFade 0.4s ease 0.5s forwards">
+            </path>
+
+            <!-- LINE 1: "Happy birthday," -->
+            <text class="bday-line1" x="195" y="356">Happy birthday,</text>
+
+            <!-- LINE 2: "Aanisa" — larger, warm golden tone -->
+            <text class="bday-line2" x="195" y="405">Aanisa</text>
+
+            <!-- Tiny sparkle flourishes that pop in after text is revealed -->
+            <!-- Left cluster -->
+            <circle class="flourish-dot" cx="52" cy="338" r="3" fill="#ffd060" style="animation-delay:5.8s" />
+            <circle class="flourish-dot" cx="43" cy="352" r="2" fill="#ffb040" style="animation-delay:6.0s" />
+            <circle class="flourish-dot" cx="58" cy="360" r="1.5" fill="#fff0a0" style="animation-delay:6.2s" />
+            <!-- Right cluster -->
+            <circle class="flourish-dot" cx="338" cy="338" r="3" fill="#ffd060" style="animation-delay:5.9s" />
+            <circle class="flourish-dot" cx="347" cy="352" r="2" fill="#ffb040" style="animation-delay:6.1s" />
+            <circle class="flourish-dot" cx="332" cy="361" r="1.5" fill="#fff0a0" style="animation-delay:6.3s" />
+            <!-- Top mini sparks -->
+            <circle class="flourish-dot" cx="142" cy="328" r="1.8" fill="#ffe080" style="animation-delay:6.0s" />
+            <circle class="flourish-dot" cx="248" cy="328" r="1.8" fill="#ffe080" style="animation-delay:6.15s" />
+            <circle class="flourish-dot" cx="195" cy="322" r="2.2" fill="#ffffff" style="animation-delay:5.9s" />
+
+            <!-- ═══════════════════════════════════════════════════
+       LEAF SPRIGS
+       ═══════════════════════════════════════════════════ -->
+
+            <g class="sw1" style="animation-delay:0s">
+                <line x1="64" y1="562" x2="64" y2="496" stroke="#245a72" stroke-width="2.5" />
+                <ellipse cx="55" cy="535" rx="10" ry="5.5" fill="#256078" transform="rotate(-32,55,535)" />
+                <ellipse cx="73" cy="525" rx="10" ry="5.5" fill="#256078" transform="rotate( 32,73,525)" />
+                <ellipse cx="55" cy="516" rx="9" ry="5" fill="#256078" transform="rotate(-28,55,516)" />
+                <ellipse cx="73" cy="508" rx="9" ry="5" fill="#256078" transform="rotate( 28,73,508)" />
+                <ellipse cx="64" cy="496" rx="9" ry="4.5" fill="#256078" />
+            </g>
+
+            <g class="sw2" style="animation-delay:0.65s">
+                <line x1="150" y1="552" x2="150" y2="488" stroke="#245a72" stroke-width="2" />
+                <ellipse cx="141" cy="522" rx="9" ry="5" fill="#256078" transform="rotate(-30,141,522)" />
+                <ellipse cx="159" cy="514" rx="9" ry="5" fill="#256078" transform="rotate( 30,159,514)" />
+                <ellipse cx="141" cy="505" rx="8" ry="4.5" fill="#256078" transform="rotate(-26,141,505)" />
+                <ellipse cx="159" cy="497" rx="8" ry="4.5" fill="#256078" transform="rotate( 26,159,497)" />
+                <ellipse cx="150" cy="488" rx="8" ry="4" fill="#256078" />
+            </g>
+
+            <g class="sw3" style="animation-delay:0.35s">
+                <line x1="220" y1="556" x2="220" y2="494" stroke="#245a72" stroke-width="2" />
+                <ellipse cx="211" cy="527" rx="9" ry="5" fill="#256078" transform="rotate(-30,211,527)" />
+                <ellipse cx="229" cy="518" rx="9" ry="5" fill="#256078" transform="rotate( 30,229,518)" />
+                <ellipse cx="211" cy="508" rx="8" ry="4.5" fill="#256078" transform="rotate(-25,211,508)" />
+                <ellipse cx="229" cy="501" rx="8" ry="4.5" fill="#256078" transform="rotate( 25,229,501)" />
+                <ellipse cx="220" cy="494" rx="8" ry="4" fill="#256078" />
+            </g>
+
+            <g class="sw1" style="animation-delay:1.05s">
+                <line x1="316" y1="550" x2="316" y2="490" stroke="#245a72" stroke-width="2" />
+                <ellipse cx="307" cy="522" rx="9" ry="5" fill="#256078" transform="rotate(-30,307,522)" />
+                <ellipse cx="325" cy="514" rx="9" ry="5" fill="#256078" transform="rotate( 30,325,514)" />
+                <ellipse cx="307" cy="505" rx="8" ry="4.5" fill="#256078" transform="rotate(-26,307,505)" />
+                <ellipse cx="325" cy="498" rx="8" ry="4.5" fill="#256078" transform="rotate( 26,325,498)" />
+                <ellipse cx="316" cy="490" rx="8" ry="4" fill="#256078" />
+            </g>
+
+            <!-- ═══════════════════════════════════════════════════
+       TALL CURVED STEMS + WHITE BELL FLOWERS
+       ═══════════════════════════════════════════════════ -->
+
+            <g class="sw2" style="animation-delay:0.2s">
+                <path d="M 28,668 C 24,580 34,498 60,428 C 76,384 52,344 40,312" stroke="#15182a" stroke-width="5"
+                    fill="none" stroke-linecap="round" />
+                <g class="bl" style="animation-delay:1.55s">
+                    <circle cx="40" cy="323" r="3.5" fill="#22303e" />
+                    <path d="M 28,320 Q 30,302 40,300 Q 50,302 52,320 Q 49,330 40,332 Q 31,330 28,320 Z"
+                        fill="#f2f2f2" />
+                    <path d="M 32,320 Q 34,308 40,306 Q 46,308 48,320" stroke="#d0d0d0" stroke-width="1.2"
+                        fill="none" />
+                    <circle cx="36" cy="308" r="2" fill="white" />
+                    <circle cx="40" cy="305" r="2" fill="white" />
+                    <circle cx="44" cy="308" r="2" fill="white" />
+                </g>
+                <path d="M 40,340 C 48,348 62,352 68,362" stroke="#15182a" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2s">
+                    <circle cx="68" cy="362" r="2.8" fill="#22303e" />
+                    <path d="M 58,360 Q 59,348 68,346 Q 77,348 78,360 Q 76,368 68,370 Q 60,368 58,360 Z"
+                        fill="#f2f2f2" />
+                    <circle cx="64" cy="350" r="1.6" fill="white" />
+                    <circle cx="68" cy="348" r="1.6" fill="white" />
+                    <circle cx="72" cy="350" r="1.6" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw3" style="animation-delay:0.88s">
+                <path d="M 17,688 C 20,598 42,508 72,438 C 90,396 68,358 56,334" stroke="#15182a" stroke-width="4.5"
+                    fill="none" stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.1s">
+                    <circle cx="56" cy="344" r="3" fill="#22303e" />
+                    <path d="M 45,342 Q 47,327 56,325 Q 65,327 67,342 Q 64,351 56,353 Q 48,351 45,342 Z"
+                        fill="#f2f2f2" />
+                    <path d="M 49,342 Q 51,332 56,330 Q 61,332 63,342" stroke="#d0d0d0" stroke-width="1" fill="none" />
+                    <circle cx="52" cy="332" r="1.6" fill="white" />
+                    <circle cx="56" cy="329" r="1.6" fill="white" />
+                    <circle cx="60" cy="332" r="1.6" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw4" style="animation-delay:0.5s">
+                <path d="M 380,658 C 388,565 370,474 344,404 C 330,360 352,320 364,294" stroke="#15182a"
+                    stroke-width="5" fill="none" stroke-linecap="round" />
+                <g class="bl" style="animation-delay:1.42s">
+                    <circle cx="364" cy="305" r="3.5" fill="#22303e" />
+                    <path d="M 352,302 Q 354,285 364,283 Q 374,285 376,302 Q 373,312 364,314 Q 355,312 352,302 Z"
+                        fill="#f2f2f2" />
+                    <path d="M 356,302 Q 358,291 364,289 Q 370,291 372,302" stroke="#d0d0d0" stroke-width="1.2"
+                        fill="none" />
+                    <circle cx="360" cy="291" r="2" fill="white" />
+                    <circle cx="364" cy="288" r="2" fill="white" />
+                    <circle cx="368" cy="291" r="2" fill="white" />
+                </g>
+                <path d="M 364,322 C 358,332 350,344 346,354" stroke="#15182a" stroke-width="2.8" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.3s">
+                    <circle cx="346" cy="354" r="2.5" fill="#22303e" />
+                    <path d="M 337,352 Q 338,340 346,338 Q 354,340 355,352 Q 353,360 346,362 Q 339,360 337,352 Z"
+                        fill="#f2f2f2" />
+                    <circle cx="342" cy="342" r="1.5" fill="white" />
+                    <circle cx="346" cy="340" r="1.5" fill="white" />
+                    <circle cx="350" cy="342" r="1.5" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw1" style="animation-delay:1.38s">
+                <path d="M 394,682 C 396,600 380,520 358,455 C 345,414 358,378 372,358" stroke="#15182a"
+                    stroke-width="4" fill="none" stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.62s">
+                    <circle cx="372" cy="367" r="2.8" fill="#22303e" />
+                    <path d="M 362,365 Q 363,351 372,349 Q 381,351 382,365 Q 380,373 372,375 Q 364,373 362,365 Z"
+                        fill="#f2f2f2" />
+                    <circle cx="368" cy="354" r="1.6" fill="white" />
+                    <circle cx="372" cy="351" r="1.6" fill="white" />
+                    <circle cx="376" cy="354" r="1.6" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw2" style="animation-delay:0.95s">
+                <path d="M 112,690 C 110,668 108,646 106,622" stroke="#15182a" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.1s">
+                    <circle cx="106" cy="622" r="2.8" fill="#22303e" />
+                    <path d="M 95,619 Q 97,604 106,602 Q 115,604 117,619 Q 115,628 106,630 Q 97,628 95,619 Z"
+                        fill="#f2f2f2" />
+                    <path d="M 99,619 Q 101,609 106,607 Q 111,609 113,619" stroke="#d0d0d0" stroke-width="1.2"
+                        fill="none" />
+                    <circle cx="102" cy="609" r="1.8" fill="white" />
+                    <circle cx="106" cy="606" r="1.8" fill="white" />
+                    <circle cx="110" cy="609" r="1.8" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw3" style="animation-delay:0.68s">
+                <path d="M 346,688 C 344,664 342,640 340,615" stroke="#15182a" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.38s">
+                    <circle cx="340" cy="615" r="2.8" fill="#22303e" />
+                    <path d="M 329,612 Q 330,597 340,595 Q 350,597 351,612 Q 349,620 340,622 Q 331,620 329,612 Z"
+                        fill="#f2f2f2" />
+                    <path d="M 333,612 Q 335,602 340,600 Q 345,602 347,612" stroke="#d0d0d0" stroke-width="1.2"
+                        fill="none" />
+                    <circle cx="336" cy="602" r="1.8" fill="white" />
+                    <circle cx="340" cy="599" r="1.8" fill="white" />
+                    <circle cx="344" cy="602" r="1.8" fill="white" />
+                </g>
+            </g>
+
+            <!-- ═══════════════════════════════════════════════════
+       ORANGE / YELLOW AUTUMN LEAF BRANCHES
+       ═══════════════════════════════════════════════════ -->
+
+            <g class="sw2" style="animation-delay:0.58s">
+                <line x1="192" y1="670" x2="196" y2="588" stroke="#15182a" stroke-width="3.5" />
+                <line x1="196" y1="588" x2="178" y2="548" stroke="#15182a" stroke-width="2.5" />
+                <line x1="196" y1="588" x2="214" y2="550" stroke="#15182a" stroke-width="2.5" />
+                <line x1="178" y1="548" x2="170" y2="526" stroke="#15182a" stroke-width="2" />
+                <line x1="214" y1="550" x2="220" y2="528" stroke="#15182a" stroke-width="2" />
+                <ellipse cx="163" cy="516" rx="17" ry="10" fill="#e0a022" filter="url(#grain)"
+                    transform="rotate(-25,163,516)" />
+                <ellipse cx="177" cy="540" rx="15" ry="9" fill="#cf8e18" filter="url(#grain)"
+                    transform="rotate( 18,177,540)" />
+                <ellipse cx="224" cy="518" rx="17" ry="10" fill="#e0a022" filter="url(#grain)"
+                    transform="rotate( 28,224,518)" />
+                <ellipse cx="212" cy="543" rx="14" ry="9" fill="#cf8e18" filter="url(#grain)"
+                    transform="rotate(-20,212,543)" />
+                <ellipse cx="193" cy="510" rx="16" ry="9" fill="#e8b030" filter="url(#grain)"
+                    transform="rotate(-38,193,510)" />
+                <ellipse cx="200" cy="530" rx="13" ry="8" fill="#c88015" filter="url(#grain)"
+                    transform="rotate( 35,200,530)" />
+            </g>
+
+            <g class="sw3" style="animation-delay:1.18s">
+                <line x1="288" y1="662" x2="290" y2="584" stroke="#15182a" stroke-width="3.5" />
+                <line x1="290" y1="584" x2="273" y2="546" stroke="#15182a" stroke-width="2.5" />
+                <line x1="290" y1="584" x2="306" y2="548" stroke="#15182a" stroke-width="2.5" />
+                <ellipse cx="266" cy="535" rx="16" ry="9.5" fill="#e0a022" filter="url(#grain)"
+                    transform="rotate(-22,266,535)" />
+                <ellipse cx="256" cy="548" rx="14" ry="8.5" fill="#cf8e18" filter="url(#grain)"
+                    transform="rotate( 15,256,548)" />
+                <ellipse cx="310" cy="537" rx="16" ry="9.5" fill="#e0a022" filter="url(#grain)"
+                    transform="rotate( 25,310,537)" />
+                <ellipse cx="302" cy="550" rx="13" ry="8" fill="#cf8e18" filter="url(#grain)"
+                    transform="rotate(-18,302,550)" />
+                <ellipse cx="286" cy="528" rx="14" ry="8" fill="#e8b030" filter="url(#grain)"
+                    transform="rotate(-42,286,528)" />
+            </g>
+
+            <!-- ═══════════════════════════════════════════════════
+       RED POPPIES
+       ═══════════════════════════════════════════════════ -->
+
+            <g class="sw1" style="animation-delay:0.4s">
+                <path d="M 150,690 C 148,652 146,614 148,574" stroke="#15182a" stroke-width="4" fill="none"
+                    stroke-linecap="round" />
+                <path d="M 148,616 C 138,610 130,603 125,594" stroke="#15182a" stroke-width="2.5" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.18s">
+                    <path d="M 119,592 Q 120,581 125,579 Q 130,581 131,592 Q 129,600 125,602 Q 121,600 119,592 Z"
+                        fill="#d04060" />
+                    <path d="M 121,591 Q 122,584 125,582 Q 128,584 129,591 Z" fill="#e05270" opacity="0.7" />
+                </g>
+                <g class="bl" style="animation-delay:1.5s">
+                    <path d="M 148,574 Q 120,547 124,522 Q 128,503 148,508 Q 168,503 172,522 Q 176,547 148,574 Z"
+                        fill="#c83025" />
+                    <path d="M 148,574 Q 120,557 113,536 Q 108,516 128,514 Q 140,512 148,524 Z" fill="#b52820" />
+                    <path d="M 148,574 Q 176,557 183,536 Q 188,516 168,514 Q 156,512 148,524 Z" fill="#b52820" />
+                    <path d="M 148,574 Q 132,549 134,528 Q 136,513 148,518 Z" fill="#e04030" opacity="0.48" />
+                    <circle cx="148" cy="545" r="14" fill="#1a2030" />
+                    <circle cx="143" cy="541" r="2.2" fill="white" />
+                    <circle cx="153" cy="541" r="2.2" fill="white" />
+                    <circle cx="148" cy="538" r="2.2" fill="white" />
+                    <circle cx="142" cy="547" r="1.8" fill="white" />
+                    <circle cx="154" cy="547" r="1.8" fill="white" />
+                    <circle cx="148" cy="552" r="1.8" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw4" style="animation-delay:0.78s">
+                <path d="M 262,692 C 260,654 258,618 255,577" stroke="#15182a" stroke-width="4" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:1.72s">
+                    <path d="M 255,577 Q 227,550 231,526 Q 235,507 255,512 Q 275,507 279,526 Q 283,550 255,577 Z"
+                        fill="#c83025" />
+                    <path d="M 255,577 Q 227,560 220,540 Q 215,520 235,518 Q 247,516 255,527 Z" fill="#b52820" />
+                    <path d="M 255,577 Q 283,560 290,540 Q 295,520 275,518 Q 263,516 255,527 Z" fill="#b52820" />
+                    <circle cx="255" cy="549" r="13" fill="#1a2030" />
+                    <circle cx="250" cy="545" r="2" fill="white" />
+                    <circle cx="260" cy="545" r="2" fill="white" />
+                    <circle cx="255" cy="542" r="2" fill="white" />
+                    <circle cx="249" cy="551" r="1.7" fill="white" />
+                    <circle cx="261" cy="551" r="1.7" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw2" style="animation-delay:1.48s">
+                <path d="M 82,692 C 80,660 78,628 76,596" stroke="#15182a" stroke-width="3.5" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.42s">
+                    <path d="M 76,596 Q 54,574 57,556 Q 60,540 76,545 Q 92,540 95,556 Q 98,574 76,596 Z"
+                        fill="#c83025" />
+                    <path d="M 76,596 Q 56,580 50,564 Q 46,548 62,546 Q 72,545 76,554 Z" fill="#b52820" />
+                    <path d="M 76,596 Q 96,580 102,564 Q 106,548 90,546 Q 80,545 76,554 Z" fill="#b52820" />
+                    <circle cx="76" cy="570" r="11" fill="#1a2030" />
+                    <circle cx="72" cy="567" r="1.8" fill="white" />
+                    <circle cx="80" cy="567" r="1.8" fill="white" />
+                    <circle cx="76" cy="564" r="1.8" fill="white" />
+                </g>
+            </g>
+
+            <!-- ═══════════════════════════════════════════════════
+       PINK FLOWERS
+       ═══════════════════════════════════════════════════ -->
+
+            <g class="sw3" style="animation-delay:0.3s">
+                <path d="M 196,692 C 194,664 192,637 190,610" stroke="#15182a" stroke-width="3.5" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:1.98s">
+                    <path d="M 190,610 Q 172,593 175,576 Q 178,562 190,567 Q 202,562 205,576 Q 208,593 190,610 Z"
+                        fill="#e05570" />
+                    <path d="M 190,610 Q 174,598 170,583 Q 167,570 180,568 Q 187,566 190,575 Z" fill="#c84060" />
+                    <path d="M 190,610 Q 206,598 210,583 Q 213,570 200,568 Q 193,566 190,575 Z" fill="#c84060" />
+                    <path d="M 190,610 Q 180,597 182,583 Q 184,573 190,575 Q 196,573 198,583 Q 200,597 190,610 Z"
+                        fill="#e06880" opacity="0.78" />
+                    <circle cx="190" cy="584" r="7" fill="#2a1830" />
+                    <circle cx="187" cy="581" r="1.5" fill="white" />
+                    <circle cx="193" cy="581" r="1.5" fill="white" />
+                    <circle cx="190" cy="579" r="1.5" fill="white" />
+                </g>
+            </g>
+
+            <g class="sw1" style="animation-delay:1.78s">
+                <path d="M 232,690 C 231,665 230,643 228,622" stroke="#15182a" stroke-width="3" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.82s">
+                    <path d="M 228,622 Q 216,610 218,599 Q 220,590 228,593 Q 236,590 238,599 Q 240,610 228,622 Z"
+                        fill="#e06080" />
+                    <path d="M 228,622 Q 220,613 221,602 Q 222,595 228,597 Q 234,595 235,602 Q 236,613 228,622 Z"
+                        fill="#c84868" opacity="0.8" />
+                    <circle cx="228" cy="601" r="5" fill="#2a1830" />
+                </g>
+            </g>
+
+            <g class="sw4" style="animation-delay:1.08s">
+                <path d="M 316,690 C 314,660 311,632 308,603" stroke="#15182a" stroke-width="3.5" fill="none"
+                    stroke-linecap="round" />
+                <g class="bl" style="animation-delay:2.18s">
+                    <path d="M 308,603 Q 290,586 293,570 Q 296,556 308,561 Q 320,556 323,570 Q 326,586 308,603 Z"
+                        fill="#e05570" />
+                    <path d="M 308,603 Q 292,591 288,576 Q 285,563 298,561 Q 305,559 308,568 Z" fill="#c84060" />
+                    <path d="M 308,603 Q 324,591 328,576 Q 331,563 318,561 Q 311,559 308,568 Z" fill="#c84060" />
+                    <path d="M 308,603 Q 298,590 300,576 Q 302,566 308,568 Q 314,566 316,576 Q 318,590 308,603 Z"
+                        fill="#e06880" opacity="0.7" />
+                    <circle cx="308" cy="574" r="7" fill="#2a1830" />
+                    <circle cx="305" cy="572" r="1.5" fill="white" />
+                    <circle cx="311" cy="572" r="1.5" fill="white" />
+                    <circle cx="308" cy="570" r="1.5" fill="white" />
+                </g>
+            </g>
+
+            <!-- ─── GRAIN OVERLAY ─────────────────────────────── -->
+            <rect width="390" height="700" fill="white" filter="url(#grain)" opacity="0.06" />
+
+        </svg>
+    </div>
+</body>
+
+</html>
