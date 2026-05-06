@@ -22,7 +22,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #9fd0ea;
+            background: #0a1628;
         }
 
         .scene {
@@ -36,26 +36,24 @@
             display: block;
         }
 
-        /* Sun pulse */
-        @keyframes sunAura {
-
-            0%,
-            100% {
-                opacity: 0.55;
-                transform: scale(1);
-            }
-
-            50% {
-                opacity: 0.42;
-                transform: scale(1.07);
-            }
+        /* Moon glow pulse */
+        @keyframes moonGlow {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.22; transform: scale(1.08); }
         }
 
-        .sun-aura {
+        .moon-aura {
             transform-box: fill-box;
             transform-origin: center;
-            animation: sunAura 4s ease-in-out infinite;
+            animation: moonGlow 5s ease-in-out infinite;
         }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .star { animation: twinkle 3s ease-in-out infinite; }
 
         /* Cloud drift */
         @keyframes driftL {
@@ -289,6 +287,73 @@
             opacity: 0;
             animation: dotPop 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
         }
+
+        /* ── Tiger Lily animations ── */
+        @keyframes petalBreathe {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            30% { transform: scale(1.03) rotate(0.8deg); }
+            70% { transform: scale(0.98) rotate(-0.5deg); }
+        }
+
+        @keyframes stamenSway {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(1.5deg); }
+            75% { transform: rotate(-1.2deg); }
+        }
+
+        @keyframes tigerBloom {
+            0% {
+                transform: scale(0) rotate(15deg);
+                opacity: 0;
+            }
+            40% {
+                transform: scale(0.6) rotate(-5deg);
+                opacity: 0.8;
+            }
+            70% {
+                transform: scale(1.08) rotate(2deg);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes petalRecurve {
+            0%, 100% { transform: scaleY(1) translateY(0); }
+            50% { transform: scaleY(1.02) translateY(-0.5px); }
+        }
+
+        @keyframes spotPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .tiger-lily-bloom {
+            transform-box: fill-box;
+            transform-origin: center bottom;
+            opacity: 0;
+            animation: tigerBloom 1.2s cubic-bezier(0.34, 1.3, 0.64, 1) forwards;
+        }
+
+        .tiger-petal {
+            transform-box: fill-box;
+            transform-origin: center bottom;
+            animation: petalBreathe 5s ease-in-out infinite;
+        }
+        .tp1 { animation-delay: 0s; }
+        .tp2 { animation-delay: 0.4s; }
+        .tp3 { animation-delay: 0.8s; }
+        .tp4 { animation-delay: 1.2s; }
+        .tp5 { animation-delay: 1.6s; }
+        .tp6 { animation-delay: 2.0s; }
+
+        .tiger-stamens {
+            transform-box: fill-box;
+            transform-origin: center bottom;
+            animation: stamenSway 3.5s ease-in-out infinite;
+        }
     </style>
 </head>
 
@@ -297,44 +362,58 @@
         <svg viewBox="0 0 390 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
             <defs>
 
-                <!-- Sky -->
+                <!-- Night Sky -->
                 <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#9fd0ea" />
-                    <stop offset="100%" stop-color="#c8ecf8" />
+                    <stop offset="0%" stop-color="#0a1628" />
+                    <stop offset="40%" stop-color="#12243e" />
+                    <stop offset="100%" stop-color="#1a3352" />
                 </linearGradient>
 
-                <!-- Sun radial glow -->
-                <radialGradient id="gSun" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stop-color="#f8dc78" />
-                    <stop offset="48%" stop-color="#f5cc62" />
-                    <stop offset="72%" stop-color="#f6d878" stop-opacity="0.3" />
-                    <stop offset="100%" stop-color="#f6d878" stop-opacity="0" />
+                <!-- Moon radial glow -->
+                <radialGradient id="gMoon" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#e8e4d8" />
+                    <stop offset="40%" stop-color="#d4cfc0" />
+                    <stop offset="65%" stop-color="#c8c0b0" stop-opacity="0.3" />
+                    <stop offset="100%" stop-color="#b0a890" stop-opacity="0" />
                 </radialGradient>
 
-                <!-- Mountain -->
+                <!-- Mountain layers (night) -->
                 <linearGradient id="gMtn" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#8aafC6" stop-opacity="0.68" />
-                    <stop offset="100%" stop-color="#aac8da" stop-opacity="0.45" />
+                    <stop offset="0%" stop-color="#3a5068" stop-opacity="0.85" />
+                    <stop offset="100%" stop-color="#2a3e54" stop-opacity="0.65" />
+                </linearGradient>
+                <linearGradient id="gMtn2" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#2e4458" stop-opacity="0.75" />
+                    <stop offset="100%" stop-color="#1e3248" stop-opacity="0.55" />
+                </linearGradient>
+                <linearGradient id="gMtn3" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#243a50" stop-opacity="0.7" />
+                    <stop offset="100%" stop-color="#1a2e44" stop-opacity="0.5" />
+                </linearGradient>
+                <!-- Snow cap gradient -->
+                <linearGradient id="gSnow" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#e8e8f0" stop-opacity="0.9" />
+                    <stop offset="100%" stop-color="#c0c8d8" stop-opacity="0.2" />
                 </linearGradient>
 
-                <!-- Hill layers -->
+                <!-- Hill layers (night) -->
                 <linearGradient id="gH1" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#65bdb3" />
-                    <stop offset="100%" stop-color="#48aca2" />
+                    <stop offset="0%" stop-color="#1e4a48" />
+                    <stop offset="100%" stop-color="#163a38" />
                 </linearGradient>
                 <linearGradient id="gH2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#38889e" />
-                    <stop offset="100%" stop-color="#287590" />
+                    <stop offset="0%" stop-color="#153040" />
+                    <stop offset="100%" stop-color="#0e2434" />
                 </linearGradient>
                 <linearGradient id="gH3" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#265d78" />
-                    <stop offset="100%" stop-color="#1a4860" />
+                    <stop offset="0%" stop-color="#0e2030" />
+                    <stop offset="100%" stop-color="#0a1824" />
                 </linearGradient>
 
-                <!-- Foreground dark bushes -->
+                <!-- Foreground dark bushes (night) -->
                 <linearGradient id="gFg" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#1c3c55" />
-                    <stop offset="100%" stop-color="#122a40" />
+                    <stop offset="0%" stop-color="#0c1e30" />
+                    <stop offset="100%" stop-color="#081420" />
                 </linearGradient>
 
                 <!-- Grain / paper texture filter -->
@@ -360,36 +439,137 @@
                     <feGaussianBlur stdDeviation="12" />
                 </filter>
 
+                <!-- Tiger Lily petal gradients -->
+                <linearGradient id="gTigerPetal" x1="0" y1="0" x2="0.5" y2="1">
+                    <stop offset="0%" stop-color="#f5942a" />
+                    <stop offset="40%" stop-color="#e87820" />
+                    <stop offset="75%" stop-color="#d86418" />
+                    <stop offset="100%" stop-color="#c85510" />
+                </linearGradient>
+                <linearGradient id="gTigerPetalLight" x1="0" y1="0" x2="0.3" y2="1">
+                    <stop offset="0%" stop-color="#fca83a" />
+                    <stop offset="50%" stop-color="#f08c28" />
+                    <stop offset="100%" stop-color="#e07420" />
+                </linearGradient>
+                <linearGradient id="gTigerPetalDeep" x1="0" y1="0" x2="0.6" y2="1">
+                    <stop offset="0%" stop-color="#e87020" />
+                    <stop offset="45%" stop-color="#d45c14" />
+                    <stop offset="100%" stop-color="#b84a10" />
+                </linearGradient>
+
+                <!-- Oriental Hybrid Lily gradients (pink/crimson/white) -->
+                <linearGradient id="gOrientalPink" x1="0" y1="0" x2="0.5" y2="1">
+                    <stop offset="0%" stop-color="#f0a0b8" />
+                    <stop offset="40%" stop-color="#e080a0" />
+                    <stop offset="100%" stop-color="#c86088" />
+                </linearGradient>
+                <linearGradient id="gOrientalCrimson" x1="0" y1="0" x2="0.5" y2="1">
+                    <stop offset="0%" stop-color="#d04060" />
+                    <stop offset="50%" stop-color="#b83050" />
+                    <stop offset="100%" stop-color="#982040" />
+                </linearGradient>
+                <linearGradient id="gOrientalWhite" x1="0" y1="0" x2="0.4" y2="1">
+                    <stop offset="0%" stop-color="#f8f0f2" />
+                    <stop offset="50%" stop-color="#e8d8e0" />
+                    <stop offset="100%" stop-color="#d8c0cc" />
+                </linearGradient>
+                <linearGradient id="gOrientalDeep" x1="0" y1="0" x2="0.6" y2="1">
+                    <stop offset="0%" stop-color="#a82848" />
+                    <stop offset="50%" stop-color="#901838" />
+                    <stop offset="100%" stop-color="#781028" />
+                </linearGradient>
+
             </defs>
 
             <!-- ─── SKY ─────────────────────────────────────────── -->
             <rect width="390" height="700" fill="url(#gSky)" />
 
-            <!-- ─── SUN ─────────────────────────────────────────── -->
-            <circle class="sun-aura" cx="195" cy="90" r="72" fill="url(#gSun)" opacity="0.55" />
-            <circle cx="195" cy="90" r="45" fill="#f5cc62" filter="url(#grain)" />
-            <circle cx="195" cy="90" r="40" fill="#f8dc7a" opacity="0.65" />
+            <!-- ─── MOON ────────────────────────────────────────── -->
+            <circle class="moon-aura" cx="310" cy="80" r="65" fill="url(#gMoon)" opacity="0.35" />
+            <!-- Moon body (crescent via mask) -->
+            <circle cx="310" cy="80" r="32" fill="#e8e4d0" filter="url(#grain)" />
+            <circle cx="310" cy="80" r="28" fill="#f0ece0" opacity="0.7" />
+            <!-- Crescent shadow -->
+            <circle cx="322" cy="74" r="26" fill="url(#gSky)" />
 
-            <!-- ─── CLOUDS ─────────────────────────────────────── -->
+            <!-- ─── STARS ─────────────────────────────────────────── -->
+            <circle class="star" cx="45" cy="28" r="1.2" fill="#e8e0d0" style="animation-delay:0s" />
+            <circle class="star" cx="120" cy="45" r="0.8" fill="#d8d0c0" style="animation-delay:1.2s" />
+            <circle class="star" cx="78" cy="110" r="1" fill="#e0d8c8" style="animation-delay:0.6s" />
+            <circle class="star" cx="160" cy="22" r="0.9" fill="#d0c8b8" style="animation-delay:2.1s" />
+            <circle class="star" cx="230" cy="35" r="1.1" fill="#e8e0d0" style="animation-delay:0.3s" />
+            <circle class="star" cx="55" cy="65" r="0.7" fill="#d8d0c0" style="animation-delay:1.8s" />
+            <circle class="star" cx="350" cy="130" r="0.9" fill="#e0d8c8" style="animation-delay:0.9s" />
+            <circle class="star" cx="28" cy="150" r="1" fill="#d0c8b8" style="animation-delay:2.5s" />
+            <circle class="star" cx="195" cy="58" r="0.8" fill="#e8e0d0" style="animation-delay:1.5s" />
+            <circle class="star" cx="380" cy="42" r="1.1" fill="#d8d0c0" style="animation-delay:0.4s" />
+            <circle class="star" cx="270" cy="18" r="0.7" fill="#e0d8c8" style="animation-delay:2.8s" />
+            <circle class="star" cx="140" cy="130" r="0.6" fill="#d0c8b8" style="animation-delay:1.1s" />
+            <circle class="star" cx="15" cy="100" r="0.9" fill="#e8e0d0" style="animation-delay:3.2s" />
+            <circle class="star" cx="365" cy="25" r="0.8" fill="#d8d0c0" style="animation-delay:0.7s" />
+            <circle class="star" cx="250" cy="55" r="1.0" fill="#e0d8c8" style="animation-delay:2.0s" />
+
+            <!-- ─── CLOUDS (wispy night clouds) ───────────────────── -->
             <g class="cloud-l">
-                <ellipse cx="76" cy="72" rx="34" ry="17" fill="white" opacity="0.9" />
-                <ellipse cx="57" cy="76" rx="22" ry="13" fill="white" opacity="0.9" />
-                <ellipse cx="97" cy="77" rx="20" ry="12" fill="white" opacity="0.9" />
-                <ellipse cx="76" cy="67" rx="27" ry="15" fill="white" />
+                <ellipse cx="76" cy="72" rx="34" ry="14" fill="#1e3854" opacity="0.5" />
+                <ellipse cx="57" cy="76" rx="22" ry="10" fill="#1e3854" opacity="0.45" />
+                <ellipse cx="97" cy="77" rx="20" ry="9" fill="#1e3854" opacity="0.45" />
+                <ellipse cx="76" cy="67" rx="27" ry="12" fill="#243e5a" opacity="0.35" />
             </g>
             <g class="cloud-r">
-                <ellipse cx="320" cy="64" rx="38" ry="18" fill="white" opacity="0.9" />
-                <ellipse cx="298" cy="68" rx="23" ry="14" fill="white" opacity="0.9" />
-                <ellipse cx="343" cy="69" rx="22" ry="13" fill="white" opacity="0.9" />
-                <ellipse cx="320" cy="59" rx="30" ry="15" fill="white" />
+                <ellipse cx="320" cy="120" rx="38" ry="14" fill="#1e3854" opacity="0.45" />
+                <ellipse cx="298" cy="124" rx="23" ry="11" fill="#1e3854" opacity="0.4" />
+                <ellipse cx="343" cy="125" rx="22" ry="10" fill="#1e3854" opacity="0.4" />
+                <ellipse cx="320" cy="115" rx="30" ry="12" fill="#243e5a" opacity="0.32" />
+            </g>
+            <!-- Extra cloud clusters -->
+            <g class="cloud-l" style="animation-duration:25s">
+                <ellipse cx="180" cy="155" rx="30" ry="10" fill="#1e3854" opacity="0.3" />
+                <ellipse cx="165" cy="158" rx="18" ry="8" fill="#1e3854" opacity="0.25" />
+                <ellipse cx="198" cy="159" rx="16" ry="7" fill="#1e3854" opacity="0.25" />
+            </g>
+            <g class="cloud-r" style="animation-duration:30s">
+                <ellipse cx="60" cy="180" rx="26" ry="9" fill="#1e3854" opacity="0.25" />
+                <ellipse cx="48" cy="183" rx="15" ry="7" fill="#1e3854" opacity="0.2" />
+                <ellipse cx="76" cy="184" rx="14" ry="6" fill="#1e3854" opacity="0.2" />
+            </g>
+            <g class="cloud-l" style="animation-duration:28s">
+                <ellipse cx="340" cy="170" rx="24" ry="8" fill="#1e3854" opacity="0.22" />
+                <ellipse cx="328" cy="173" rx="14" ry="6" fill="#1e3854" opacity="0.18" />
+                <ellipse cx="355" cy="174" rx="13" ry="5" fill="#1e3854" opacity="0.18" />
             </g>
 
-            <!-- ─── MOUNTAINS ─────────────────────────────────── -->
-            <path d="M -5,395 L 88,195 L 195,132 L 302,200 L 395,335 L 395,395 Z" fill="url(#gMtn)"
-                filter="url(#grain)" />
-            <path d="M -5,370 L 74,228 L 158,315 L -5,382 Z" fill="#96b8cc" fill-opacity="0.52" filter="url(#grain)" />
-            <path d="M 395,360 L 312,235 L 248,298 L 395,378 Z" fill="#96b8cc" fill-opacity="0.52"
-                filter="url(#grain)" />
+            <!-- ─── MOUNTAINS (multi-ridge, snow-capped) ──────────── -->
+            <!-- Back ridge (tallest, snow-capped peak) -->
+            <path d="M -5,395 L 60,220 L 130,175 L 195,132 L 260,170 L 330,215 L 395,335 L 395,395 Z"
+                fill="url(#gMtn)" filter="url(#grain)" />
+            <!-- Snow cap on main peak -->
+            <path d="M 160,190 L 195,132 L 230,185 Q 215,178 195,175 Q 175,178 160,190 Z"
+                fill="url(#gSnow)" />
+            <!-- Snow streaks -->
+            <path d="M 180,170 L 195,132 L 210,168 Q 200,165 195,162 Q 188,165 180,170 Z"
+                fill="#e8e8f0" opacity="0.8" />
+
+            <!-- Mid-left ridge -->
+            <path d="M -5,380 L 40,260 L 90,230 L 140,260 L 170,310 L -5,395 Z"
+                fill="url(#gMtn2)" filter="url(#grain)" />
+            <!-- Snow on mid-left peak -->
+            <path d="M 72,242 L 90,230 L 108,245 Q 98,240 90,238 Q 82,240 72,242 Z"
+                fill="url(#gSnow)" opacity="0.7" />
+
+            <!-- Mid-right ridge -->
+            <path d="M 395,370 L 340,250 L 300,235 L 260,260 L 230,310 L 395,390 Z"
+                fill="url(#gMtn2)" filter="url(#grain)" />
+            <!-- Snow on mid-right peak -->
+            <path d="M 282,248 L 300,235 L 318,250 Q 308,246 300,244 Q 292,246 282,248 Z"
+                fill="url(#gSnow)" opacity="0.7" />
+
+            <!-- Front-left foothill -->
+            <path d="M -5,410 L 50,310 L 100,340 L 160,360 L -5,420 Z"
+                fill="url(#gMtn3)" filter="url(#grain)" />
+            <!-- Front-right foothill -->
+            <path d="M 395,400 L 350,320 L 300,345 L 240,365 L 395,415 Z"
+                fill="url(#gMtn3)" filter="url(#grain)" />
 
             <!-- ─── ROLLING HILLS ─────────────────────────────── -->
             <path d="M -5,432
@@ -420,7 +600,7 @@
   Q 154,612 184,624 Q 214,636 246,624
   Q 276,614 308,626 Q 338,638 370,624
   Q 383,618 395,622
-  L 395,700 L -5,700 Z" fill="#142c42" filter="url(#grain)" />
+  L 395,700 L -5,700 Z" fill="#0a1a2a" filter="url(#grain)" />
 
             <!-- ═══════════════════════════════════════════════════
        HANDWRITTEN BIRTHDAY TEXT
@@ -464,302 +644,612 @@
        ═══════════════════════════════════════════════════ -->
 
             <g class="sw1" style="animation-delay:0s">
-                <line x1="64" y1="562" x2="64" y2="496" stroke="#245a72" stroke-width="2.5" />
-                <ellipse cx="55" cy="535" rx="10" ry="5.5" fill="#256078" transform="rotate(-32,55,535)" />
-                <ellipse cx="73" cy="525" rx="10" ry="5.5" fill="#256078" transform="rotate( 32,73,525)" />
-                <ellipse cx="55" cy="516" rx="9" ry="5" fill="#256078" transform="rotate(-28,55,516)" />
-                <ellipse cx="73" cy="508" rx="9" ry="5" fill="#256078" transform="rotate( 28,73,508)" />
-                <ellipse cx="64" cy="496" rx="9" ry="4.5" fill="#256078" />
+                <line x1="64" y1="562" x2="64" y2="496" stroke="#0e2a38" stroke-width="2.5" />
+                <ellipse cx="55" cy="535" rx="10" ry="5.5" fill="#0c2830" transform="rotate(-32,55,535)" />
+                <ellipse cx="73" cy="525" rx="10" ry="5.5" fill="#0c2830" transform="rotate( 32,73,525)" />
+                <ellipse cx="55" cy="516" rx="9" ry="5" fill="#0c2830" transform="rotate(-28,55,516)" />
+                <ellipse cx="73" cy="508" rx="9" ry="5" fill="#0c2830" transform="rotate( 28,73,508)" />
+                <ellipse cx="64" cy="496" rx="9" ry="4.5" fill="#0c2830" />
             </g>
 
             <g class="sw2" style="animation-delay:0.65s">
-                <line x1="150" y1="552" x2="150" y2="488" stroke="#245a72" stroke-width="2" />
-                <ellipse cx="141" cy="522" rx="9" ry="5" fill="#256078" transform="rotate(-30,141,522)" />
-                <ellipse cx="159" cy="514" rx="9" ry="5" fill="#256078" transform="rotate( 30,159,514)" />
-                <ellipse cx="141" cy="505" rx="8" ry="4.5" fill="#256078" transform="rotate(-26,141,505)" />
-                <ellipse cx="159" cy="497" rx="8" ry="4.5" fill="#256078" transform="rotate( 26,159,497)" />
-                <ellipse cx="150" cy="488" rx="8" ry="4" fill="#256078" />
+                <line x1="150" y1="552" x2="150" y2="488" stroke="#0e2a38" stroke-width="2" />
+                <ellipse cx="141" cy="522" rx="9" ry="5" fill="#0c2830" transform="rotate(-30,141,522)" />
+                <ellipse cx="159" cy="514" rx="9" ry="5" fill="#0c2830" transform="rotate( 30,159,514)" />
+                <ellipse cx="141" cy="505" rx="8" ry="4.5" fill="#0c2830" transform="rotate(-26,141,505)" />
+                <ellipse cx="159" cy="497" rx="8" ry="4.5" fill="#0c2830" transform="rotate( 26,159,497)" />
+                <ellipse cx="150" cy="488" rx="8" ry="4" fill="#0c2830" />
             </g>
 
             <g class="sw3" style="animation-delay:0.35s">
-                <line x1="220" y1="556" x2="220" y2="494" stroke="#245a72" stroke-width="2" />
-                <ellipse cx="211" cy="527" rx="9" ry="5" fill="#256078" transform="rotate(-30,211,527)" />
-                <ellipse cx="229" cy="518" rx="9" ry="5" fill="#256078" transform="rotate( 30,229,518)" />
-                <ellipse cx="211" cy="508" rx="8" ry="4.5" fill="#256078" transform="rotate(-25,211,508)" />
-                <ellipse cx="229" cy="501" rx="8" ry="4.5" fill="#256078" transform="rotate( 25,229,501)" />
-                <ellipse cx="220" cy="494" rx="8" ry="4" fill="#256078" />
+                <line x1="220" y1="556" x2="220" y2="494" stroke="#0e2a38" stroke-width="2" />
+                <ellipse cx="211" cy="527" rx="9" ry="5" fill="#0c2830" transform="rotate(-30,211,527)" />
+                <ellipse cx="229" cy="518" rx="9" ry="5" fill="#0c2830" transform="rotate( 30,229,518)" />
+                <ellipse cx="211" cy="508" rx="8" ry="4.5" fill="#0c2830" transform="rotate(-25,211,508)" />
+                <ellipse cx="229" cy="501" rx="8" ry="4.5" fill="#0c2830" transform="rotate( 25,229,501)" />
+                <ellipse cx="220" cy="494" rx="8" ry="4" fill="#0c2830" />
             </g>
 
             <g class="sw1" style="animation-delay:1.05s">
-                <line x1="316" y1="550" x2="316" y2="490" stroke="#245a72" stroke-width="2" />
-                <ellipse cx="307" cy="522" rx="9" ry="5" fill="#256078" transform="rotate(-30,307,522)" />
-                <ellipse cx="325" cy="514" rx="9" ry="5" fill="#256078" transform="rotate( 30,325,514)" />
-                <ellipse cx="307" cy="505" rx="8" ry="4.5" fill="#256078" transform="rotate(-26,307,505)" />
-                <ellipse cx="325" cy="498" rx="8" ry="4.5" fill="#256078" transform="rotate( 26,325,498)" />
-                <ellipse cx="316" cy="490" rx="8" ry="4" fill="#256078" />
+                <line x1="316" y1="550" x2="316" y2="490" stroke="#0e2a38" stroke-width="2" />
+                <ellipse cx="307" cy="522" rx="9" ry="5" fill="#0c2830" transform="rotate(-30,307,522)" />
+                <ellipse cx="325" cy="514" rx="9" ry="5" fill="#0c2830" transform="rotate( 30,325,514)" />
+                <ellipse cx="307" cy="505" rx="8" ry="4.5" fill="#0c2830" transform="rotate(-26,307,505)" />
+                <ellipse cx="325" cy="498" rx="8" ry="4.5" fill="#0c2830" transform="rotate( 26,325,498)" />
+                <ellipse cx="316" cy="490" rx="8" ry="4" fill="#0c2830" />
             </g>
+
 
             <!-- ═══════════════════════════════════════════════════
-       TALL CURVED STEMS + WHITE BELL FLOWERS
+       TIGER LILIES (Lilium lancifolium)
+       Recurved orange petals with dark spots, long stamens
        ═══════════════════════════════════════════════════ -->
 
-            <g class="sw2" style="animation-delay:0.2s">
-                <path d="M 28,668 C 24,580 34,498 60,428 C 76,384 52,344 40,312" stroke="#15182a" stroke-width="5"
-                    fill="none" stroke-linecap="round" />
-                <g class="bl" style="animation-delay:1.55s">
-                    <circle cx="40" cy="323" r="3.5" fill="#22303e" />
-                    <path d="M 28,320 Q 30,302 40,300 Q 50,302 52,320 Q 49,330 40,332 Q 31,330 28,320 Z"
-                        fill="#f2f2f2" />
-                    <path d="M 32,320 Q 34,308 40,306 Q 46,308 48,320" stroke="#d0d0d0" stroke-width="1.2"
-                        fill="none" />
-                    <circle cx="36" cy="308" r="2" fill="white" />
-                    <circle cx="40" cy="305" r="2" fill="white" />
-                    <circle cx="44" cy="308" r="2" fill="white" />
-                </g>
-                <path d="M 40,340 C 48,348 62,352 68,362" stroke="#15182a" stroke-width="3" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2s">
-                    <circle cx="68" cy="362" r="2.8" fill="#22303e" />
-                    <path d="M 58,360 Q 59,348 68,346 Q 77,348 78,360 Q 76,368 68,370 Q 60,368 58,360 Z"
-                        fill="#f2f2f2" />
-                    <circle cx="64" cy="350" r="1.6" fill="white" />
-                    <circle cx="68" cy="348" r="1.6" fill="white" />
-                    <circle cx="72" cy="350" r="1.6" fill="white" />
-                </g>
-            </g>
-
-            <g class="sw3" style="animation-delay:0.88s">
-                <path d="M 17,688 C 20,598 42,508 72,438 C 90,396 68,358 56,334" stroke="#15182a" stroke-width="4.5"
-                    fill="none" stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.1s">
-                    <circle cx="56" cy="344" r="3" fill="#22303e" />
-                    <path d="M 45,342 Q 47,327 56,325 Q 65,327 67,342 Q 64,351 56,353 Q 48,351 45,342 Z"
-                        fill="#f2f2f2" />
-                    <path d="M 49,342 Q 51,332 56,330 Q 61,332 63,342" stroke="#d0d0d0" stroke-width="1" fill="none" />
-                    <circle cx="52" cy="332" r="1.6" fill="white" />
-                    <circle cx="56" cy="329" r="1.6" fill="white" />
-                    <circle cx="60" cy="332" r="1.6" fill="white" />
-                </g>
-            </g>
-
-            <g class="sw4" style="animation-delay:0.5s">
-                <path d="M 380,658 C 388,565 370,474 344,404 C 330,360 352,320 364,294" stroke="#15182a"
-                    stroke-width="5" fill="none" stroke-linecap="round" />
-                <g class="bl" style="animation-delay:1.42s">
-                    <circle cx="364" cy="305" r="3.5" fill="#22303e" />
-                    <path d="M 352,302 Q 354,285 364,283 Q 374,285 376,302 Q 373,312 364,314 Q 355,312 352,302 Z"
-                        fill="#f2f2f2" />
-                    <path d="M 356,302 Q 358,291 364,289 Q 370,291 372,302" stroke="#d0d0d0" stroke-width="1.2"
-                        fill="none" />
-                    <circle cx="360" cy="291" r="2" fill="white" />
-                    <circle cx="364" cy="288" r="2" fill="white" />
-                    <circle cx="368" cy="291" r="2" fill="white" />
-                </g>
-                <path d="M 364,322 C 358,332 350,344 346,354" stroke="#15182a" stroke-width="2.8" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.3s">
-                    <circle cx="346" cy="354" r="2.5" fill="#22303e" />
-                    <path d="M 337,352 Q 338,340 346,338 Q 354,340 355,352 Q 353,360 346,362 Q 339,360 337,352 Z"
-                        fill="#f2f2f2" />
-                    <circle cx="342" cy="342" r="1.5" fill="white" />
-                    <circle cx="346" cy="340" r="1.5" fill="white" />
-                    <circle cx="350" cy="342" r="1.5" fill="white" />
-                </g>
-            </g>
-
-            <g class="sw1" style="animation-delay:1.38s">
-                <path d="M 394,682 C 396,600 380,520 358,455 C 345,414 358,378 372,358" stroke="#15182a"
-                    stroke-width="4" fill="none" stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.62s">
-                    <circle cx="372" cy="367" r="2.8" fill="#22303e" />
-                    <path d="M 362,365 Q 363,351 372,349 Q 381,351 382,365 Q 380,373 372,375 Q 364,373 362,365 Z"
-                        fill="#f2f2f2" />
-                    <circle cx="368" cy="354" r="1.6" fill="white" />
-                    <circle cx="372" cy="351" r="1.6" fill="white" />
-                    <circle cx="376" cy="354" r="1.6" fill="white" />
-                </g>
-            </g>
-
-            <g class="sw2" style="animation-delay:0.95s">
-                <path d="M 112,690 C 110,668 108,646 106,622" stroke="#15182a" stroke-width="3" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.1s">
-                    <circle cx="106" cy="622" r="2.8" fill="#22303e" />
-                    <path d="M 95,619 Q 97,604 106,602 Q 115,604 117,619 Q 115,628 106,630 Q 97,628 95,619 Z"
-                        fill="#f2f2f2" />
-                    <path d="M 99,619 Q 101,609 106,607 Q 111,609 113,619" stroke="#d0d0d0" stroke-width="1.2"
-                        fill="none" />
-                    <circle cx="102" cy="609" r="1.8" fill="white" />
-                    <circle cx="106" cy="606" r="1.8" fill="white" />
-                    <circle cx="110" cy="609" r="1.8" fill="white" />
-                </g>
-            </g>
-
-            <g class="sw3" style="animation-delay:0.68s">
-                <path d="M 346,688 C 344,664 342,640 340,615" stroke="#15182a" stroke-width="3" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.38s">
-                    <circle cx="340" cy="615" r="2.8" fill="#22303e" />
-                    <path d="M 329,612 Q 330,597 340,595 Q 350,597 351,612 Q 349,620 340,622 Q 331,620 329,612 Z"
-                        fill="#f2f2f2" />
-                    <path d="M 333,612 Q 335,602 340,600 Q 345,602 347,612" stroke="#d0d0d0" stroke-width="1.2"
-                        fill="none" />
-                    <circle cx="336" cy="602" r="1.8" fill="white" />
-                    <circle cx="340" cy="599" r="1.8" fill="white" />
-                    <circle cx="344" cy="602" r="1.8" fill="white" />
-                </g>
-            </g>
-
-            <!-- ═══════════════════════════════════════════════════
-       ORANGE / YELLOW AUTUMN LEAF BRANCHES
-       ═══════════════════════════════════════════════════ -->
-
+            <!-- ── TIGER LILY 1 (center-left) ── -->
             <g class="sw2" style="animation-delay:0.58s">
-                <line x1="192" y1="670" x2="196" y2="588" stroke="#15182a" stroke-width="3.5" />
-                <line x1="196" y1="588" x2="178" y2="548" stroke="#15182a" stroke-width="2.5" />
-                <line x1="196" y1="588" x2="214" y2="550" stroke="#15182a" stroke-width="2.5" />
-                <line x1="178" y1="548" x2="170" y2="526" stroke="#15182a" stroke-width="2" />
-                <line x1="214" y1="550" x2="220" y2="528" stroke="#15182a" stroke-width="2" />
-                <ellipse cx="163" cy="516" rx="17" ry="10" fill="#e0a022" filter="url(#grain)"
-                    transform="rotate(-25,163,516)" />
-                <ellipse cx="177" cy="540" rx="15" ry="9" fill="#cf8e18" filter="url(#grain)"
-                    transform="rotate( 18,177,540)" />
-                <ellipse cx="224" cy="518" rx="17" ry="10" fill="#e0a022" filter="url(#grain)"
-                    transform="rotate( 28,224,518)" />
-                <ellipse cx="212" cy="543" rx="14" ry="9" fill="#cf8e18" filter="url(#grain)"
-                    transform="rotate(-20,212,543)" />
-                <ellipse cx="193" cy="510" rx="16" ry="9" fill="#e8b030" filter="url(#grain)"
-                    transform="rotate(-38,193,510)" />
-                <ellipse cx="200" cy="530" rx="13" ry="8" fill="#c88015" filter="url(#grain)"
-                    transform="rotate( 35,200,530)" />
+                <!-- Main stem -->
+                <path d="M 128,695 C 126,665 124,633 122,598 C 120,572 116,544 112,522"
+                    stroke="#2d5a28" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                <!-- Branch stem to second bud -->
+                <path d="M 122,598 C 128,582 134,566 140,550"
+                    stroke="#2d5a28" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                <!-- Lance-shaped leaves along stem -->
+                <ellipse cx="114" cy="645" rx="18" ry="5" fill="#2a6630" transform="rotate(-35,114,645)" />
+                <ellipse cx="132" cy="630" rx="16" ry="4.5" fill="#347038" transform="rotate(30,132,630)" />
+                <ellipse cx="116" cy="612" rx="15" ry="4" fill="#2a6630" transform="rotate(-28,116,612)" />
+                <ellipse cx="130" cy="594" rx="13" ry="3.5" fill="#347038" transform="rotate(25,130,594)" />
+                <ellipse cx="118" cy="576" rx="12" ry="3.5" fill="#2a6630" transform="rotate(-22,118,576)" />
+                <ellipse cx="128" cy="559" rx="11" ry="3" fill="#347038" transform="rotate(20,128,559)" />
+
+                <!-- ── Tiger Lily Flower 1 (top, nodding) ── -->
+                <g class="bl tiger-lily-bloom" style="animation-delay:1.5s">
+                    <g transform="translate(112,522)">
+                        <!-- Petal 1 — back left, recurved -->
+                        <path class="tiger-petal tp1" d="M 0,0 C -8,-4 -22,-14 -26,-28 C -28,-36 -22,-42 -14,-38 C -6,-34 -2,-18 0,0 Z"
+                            fill="url(#gTigerPetal)" />
+                        <circle cx="-14" cy="-22" r="1.2" fill="#3a1a0a" />
+                        <circle cx="-18" cy="-28" r="1" fill="#3a1a0a" />
+                        <circle cx="-10" cy="-16" r="1.1" fill="#3a1a0a" />
+                        <circle cx="-20" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="-12" cy="-30" r="0.8" fill="#3a1a0a" />
+                        <circle cx="-16" cy="-12" r="1" fill="#3a1a0a" />
+                        <circle cx="-22" cy="-24" r="0.7" fill="#3a1a0a" />
+
+                        <!-- Petal 2 — back right, recurved -->
+                        <path class="tiger-petal tp2" d="M 0,0 C 8,-4 22,-14 26,-28 C 28,-36 22,-42 14,-38 C 6,-34 2,-18 0,0 Z"
+                            fill="url(#gTigerPetal)" />
+                        <circle cx="14" cy="-22" r="1.2" fill="#3a1a0a" />
+                        <circle cx="18" cy="-28" r="1" fill="#3a1a0a" />
+                        <circle cx="10" cy="-16" r="1.1" fill="#3a1a0a" />
+                        <circle cx="20" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="12" cy="-30" r="0.8" fill="#3a1a0a" />
+                        <circle cx="16" cy="-12" r="1" fill="#3a1a0a" />
+
+                        <!-- Petal 3 — center back -->
+                        <path class="tiger-petal tp3" d="M 0,0 C -3,-6 -4,-22 0,-36 C 2,-42 6,-44 8,-40 C 10,-36 6,-20 0,0 Z"
+                            fill="url(#gTigerPetalLight)" />
+                        <circle cx="2" cy="-20" r="1" fill="#3a1a0a" />
+                        <circle cx="-1" cy="-28" r="0.9" fill="#3a1a0a" />
+                        <circle cx="4" cy="-14" r="0.8" fill="#3a1a0a" />
+                        <circle cx="1" cy="-32" r="0.7" fill="#3a1a0a" />
+
+                        <!-- Petal 4 — front left -->
+                        <path class="tiger-petal tp4" d="M 0,0 C -10,-2 -24,-8 -30,-18 C -34,-26 -28,-32 -18,-30 C -10,-28 -4,-14 0,0 Z"
+                            fill="url(#gTigerPetalDeep)" />
+                        <circle cx="-16" cy="-14" r="1.1" fill="#3a1a0a" />
+                        <circle cx="-22" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="-12" cy="-10" r="1" fill="#3a1a0a" />
+                        <circle cx="-24" cy="-22" r="0.8" fill="#3a1a0a" />
+                        <circle cx="-18" cy="-24" r="0.7" fill="#3a1a0a" />
+
+                        <!-- Petal 5 — front right -->
+                        <path class="tiger-petal tp5" d="M 0,0 C 10,-2 24,-8 30,-18 C 34,-26 28,-32 18,-30 C 10,-28 4,-14 0,0 Z"
+                            fill="url(#gTigerPetalDeep)" />
+                        <circle cx="16" cy="-14" r="1.1" fill="#3a1a0a" />
+                        <circle cx="22" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="12" cy="-10" r="1" fill="#3a1a0a" />
+                        <circle cx="24" cy="-22" r="0.8" fill="#3a1a0a" />
+
+                        <!-- Petal 6 — front center -->
+                        <path class="tiger-petal tp6" d="M 0,0 C 2,-8 2,-20 -2,-32 C -4,-38 -8,-40 -8,-34 C -8,-28 -4,-14 0,0 Z"
+                            fill="url(#gTigerPetalLight)" />
+                        <circle cx="-2" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="0" cy="-26" r="0.8" fill="#3a1a0a" />
+                        <circle cx="-4" cy="-12" r="0.7" fill="#3a1a0a" />
+
+                        <!-- Stamens — long, reaching outward -->
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-18" y2="-38" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="-19" cy="-40" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(-25,-19,-40)" />
+                            <line x1="0" y1="0" x2="-8" y2="-40" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="-9" cy="-42" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(-10,-9,-42)" />
+                            <line x1="0" y1="0" x2="4" y2="-42" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="4" cy="-44" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(5,4,-44)" />
+                            <line x1="0" y1="0" x2="14" y2="-40" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="15" cy="-42" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(18,15,-42)" />
+                            <line x1="0" y1="0" x2="20" y2="-36" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="21" cy="-38" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(28,21,-38)" />
+                            <line x1="0" y1="0" x2="-22" y2="-32" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="-23" cy="-34" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(-35,-23,-34)" />
+                        </g>
+
+                        <!-- Pistil — central, slightly longer -->
+                        <line x1="0" y1="0" x2="0" y2="-44" stroke="#8aad5a" stroke-width="1" />
+                        <circle cx="0" cy="-45" r="1.8" fill="#5a8a30" />
+                    </g>
+                </g>
+
+                <!-- ── Tiger Lily Bud (side branch) ── -->
+                <g class="bl" style="animation-delay:2.2s">
+                    <g transform="translate(140,550)">
+                        <!-- Closed bud -->
+                        <path d="M 0,0 C -4,-2 -7,-10 -6,-18 C -5,-24 -2,-26 0,-24 C 2,-26 5,-24 6,-18 C 7,-10 4,-2 0,0 Z"
+                            fill="#e8762a" />
+                        <path d="M 0,0 C -2,-3 -3,-12 -2,-18 C -1,-22 0,-24 0,-24 C 0,-24 1,-22 2,-18 C 3,-12 2,-3 0,0 Z"
+                            fill="#d06420" opacity="0.6" />
+                        <circle cx="-2" cy="-12" r="0.6" fill="#3a1a0a" />
+                        <circle cx="2" cy="-14" r="0.5" fill="#3a1a0a" />
+                        <circle cx="0" cy="-8" r="0.5" fill="#3a1a0a" />
+                        <!-- Bud sepal tips -->
+                        <path d="M -6,-18 C -6,-20 -5,-22 -4,-20" stroke="#3a7a30" stroke-width="0.6" fill="none" />
+                        <path d="M 6,-18 C 6,-20 5,-22 4,-20" stroke="#3a7a30" stroke-width="0.6" fill="none" />
+                    </g>
+                </g>
             </g>
 
+            <!-- ── TIGER LILY 2 (center-right) ── -->
             <g class="sw3" style="animation-delay:1.18s">
-                <line x1="288" y1="662" x2="290" y2="584" stroke="#15182a" stroke-width="3.5" />
-                <line x1="290" y1="584" x2="273" y2="546" stroke="#15182a" stroke-width="2.5" />
-                <line x1="290" y1="584" x2="306" y2="548" stroke="#15182a" stroke-width="2.5" />
-                <ellipse cx="266" cy="535" rx="16" ry="9.5" fill="#e0a022" filter="url(#grain)"
-                    transform="rotate(-22,266,535)" />
-                <ellipse cx="256" cy="548" rx="14" ry="8.5" fill="#cf8e18" filter="url(#grain)"
-                    transform="rotate( 15,256,548)" />
-                <ellipse cx="310" cy="537" rx="16" ry="9.5" fill="#e0a022" filter="url(#grain)"
-                    transform="rotate( 25,310,537)" />
-                <ellipse cx="302" cy="550" rx="13" ry="8" fill="#cf8e18" filter="url(#grain)"
-                    transform="rotate(-18,302,550)" />
-                <ellipse cx="286" cy="528" rx="14" ry="8" fill="#e8b030" filter="url(#grain)"
-                    transform="rotate(-42,286,528)" />
+                <!-- Main stem -->
+                <path d="M 288,680 C 286,650 284,618 282,586 C 280,564 278,542 275,524"
+                    stroke="#2d5a28" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                <!-- Branch stem -->
+                <path d="M 282,586 C 288,572 294,558 300,544"
+                    stroke="#2d5a28" stroke-width="2.5" fill="none" stroke-linecap="round" />
+                <!-- Lance-shaped leaves -->
+                <ellipse cx="278" cy="638" rx="17" ry="4.5" fill="#2a6630" transform="rotate(-30,278,638)" />
+                <ellipse cx="292" cy="622" rx="15" ry="4" fill="#347038" transform="rotate(28,292,622)" />
+                <ellipse cx="280" cy="604" rx="14" ry="3.5" fill="#2a6630" transform="rotate(-25,280,604)" />
+                <ellipse cx="290" cy="586" rx="12" ry="3.5" fill="#347038" transform="rotate(22,290,586)" />
+                <ellipse cx="280" cy="568" rx="11" ry="3" fill="#2a6630" transform="rotate(-20,280,568)" />
+
+                <!-- ── Tiger Lily Flower 2 (top, nodding, mirrored) ── -->
+                <g class="bl tiger-lily-bloom" style="animation-delay:1.85s">
+                    <g transform="translate(275,524) scale(-1,1)">
+                        <!-- Petal 1 — back left -->
+                        <path class="tiger-petal tp1" d="M 0,0 C -8,-4 -22,-14 -26,-28 C -28,-36 -22,-42 -14,-38 C -6,-34 -2,-18 0,0 Z"
+                            fill="url(#gTigerPetal)" />
+                        <circle cx="-14" cy="-22" r="1.2" fill="#3a1a0a" />
+                        <circle cx="-18" cy="-28" r="1" fill="#3a1a0a" />
+                        <circle cx="-10" cy="-16" r="1.1" fill="#3a1a0a" />
+                        <circle cx="-20" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="-12" cy="-30" r="0.8" fill="#3a1a0a" />
+
+                        <!-- Petal 2 — back right -->
+                        <path class="tiger-petal tp2" d="M 0,0 C 8,-4 22,-14 26,-28 C 28,-36 22,-42 14,-38 C 6,-34 2,-18 0,0 Z"
+                            fill="url(#gTigerPetal)" />
+                        <circle cx="14" cy="-22" r="1.2" fill="#3a1a0a" />
+                        <circle cx="18" cy="-28" r="1" fill="#3a1a0a" />
+                        <circle cx="10" cy="-16" r="1.1" fill="#3a1a0a" />
+                        <circle cx="20" cy="-18" r="0.9" fill="#3a1a0a" />
+
+                        <!-- Petal 3 — center back -->
+                        <path class="tiger-petal tp3" d="M 0,0 C -3,-6 -4,-22 0,-36 C 2,-42 6,-44 8,-40 C 10,-36 6,-20 0,0 Z"
+                            fill="url(#gTigerPetalLight)" />
+                        <circle cx="2" cy="-20" r="1" fill="#3a1a0a" />
+                        <circle cx="-1" cy="-28" r="0.9" fill="#3a1a0a" />
+
+                        <!-- Petal 4 — front left -->
+                        <path class="tiger-petal tp4" d="M 0,0 C -10,-2 -24,-8 -30,-18 C -34,-26 -28,-32 -18,-30 C -10,-28 -4,-14 0,0 Z"
+                            fill="url(#gTigerPetalDeep)" />
+                        <circle cx="-16" cy="-14" r="1.1" fill="#3a1a0a" />
+                        <circle cx="-22" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="-12" cy="-10" r="1" fill="#3a1a0a" />
+
+                        <!-- Petal 5 — front right -->
+                        <path class="tiger-petal tp5" d="M 0,0 C 10,-2 24,-8 30,-18 C 34,-26 28,-32 18,-30 C 10,-28 4,-14 0,0 Z"
+                            fill="url(#gTigerPetalDeep)" />
+                        <circle cx="16" cy="-14" r="1.1" fill="#3a1a0a" />
+                        <circle cx="22" cy="-18" r="0.9" fill="#3a1a0a" />
+
+                        <!-- Petal 6 — front center -->
+                        <path class="tiger-petal tp6" d="M 0,0 C 2,-8 2,-20 -2,-32 C -4,-38 -8,-40 -8,-34 C -8,-28 -4,-14 0,0 Z"
+                            fill="url(#gTigerPetalLight)" />
+                        <circle cx="-2" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="0" cy="-26" r="0.8" fill="#3a1a0a" />
+
+                        <!-- Stamens -->
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-18" y2="-38" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="-19" cy="-40" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(-25,-19,-40)" />
+                            <line x1="0" y1="0" x2="-8" y2="-40" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="-9" cy="-42" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(-10,-9,-42)" />
+                            <line x1="0" y1="0" x2="4" y2="-42" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="4" cy="-44" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(5,4,-44)" />
+                            <line x1="0" y1="0" x2="14" y2="-40" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="15" cy="-42" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(18,15,-42)" />
+                            <line x1="0" y1="0" x2="20" y2="-36" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="21" cy="-38" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(28,21,-38)" />
+                            <line x1="0" y1="0" x2="-22" y2="-32" stroke="#c4a050" stroke-width="0.8" />
+                            <ellipse cx="-23" cy="-34" rx="2" ry="1.2" fill="#6b2e10" transform="rotate(-35,-23,-34)" />
+                        </g>
+
+                        <!-- Pistil -->
+                        <line x1="0" y1="0" x2="0" y2="-44" stroke="#8aad5a" stroke-width="1" />
+                        <circle cx="0" cy="-45" r="1.8" fill="#5a8a30" />
+                    </g>
+                </g>
+
+                <!-- ── Tiger Lily Bud 2 (side branch, half-open) ── -->
+                <g class="bl" style="animation-delay:2.5s">
+                    <g transform="translate(300,544)">
+                        <!-- Half-open bud with visible petal tips -->
+                        <path d="M 0,0 C -5,-3 -9,-12 -8,-22 C -7,-28 -3,-32 0,-28 C 3,-32 7,-28 8,-22 C 9,-12 5,-3 0,0 Z"
+                            fill="#e8762a" />
+                        <path d="M 0,0 C -2,-4 -4,-14 -3,-22 C -2,-26 0,-28 0,-28 C 0,-28 2,-26 3,-22 C 4,-14 2,-4 0,0 Z"
+                            fill="#d86820" opacity="0.55" />
+                        <!-- Spots on bud -->
+                        <circle cx="-3" cy="-14" r="0.7" fill="#3a1a0a" />
+                        <circle cx="3" cy="-16" r="0.6" fill="#3a1a0a" />
+                        <circle cx="0" cy="-10" r="0.6" fill="#3a1a0a" />
+                        <circle cx="-5" cy="-20" r="0.5" fill="#3a1a0a" />
+                        <circle cx="5" cy="-18" r="0.5" fill="#3a1a0a" />
+                        <!-- Sepals -->
+                        <path d="M -8,-22 C -9,-24 -7,-26 -5,-24" stroke="#3a7a30" stroke-width="0.7" fill="none" />
+                        <path d="M 8,-22 C 9,-24 7,-26 5,-24" stroke="#3a7a30" stroke-width="0.7" fill="none" />
+                        <!-- Peeking stamen -->
+                        <line x1="0" y1="-28" x2="-2" y2="-33" stroke="#c4a050" stroke-width="0.5" />
+                        <ellipse cx="-3" cy="-34" rx="1.2" ry="0.8" fill="#6b2e10" />
+                    </g>
+                </g>
             </g>
 
             <!-- ═══════════════════════════════════════════════════
-       RED POPPIES
+       ORIENTAL HYBRID LILIES + EXTRA TIGER LILIES
+       Large bowl-shaped blooms in pink, crimson, white
        ═══════════════════════════════════════════════════ -->
 
+            <!-- ── ORIENTAL LILY 1 (large, pink, left-center) ── -->
             <g class="sw1" style="animation-delay:0.4s">
-                <path d="M 150,690 C 148,652 146,614 148,574" stroke="#15182a" stroke-width="4" fill="none"
-                    stroke-linecap="round" />
-                <path d="M 148,616 C 138,610 130,603 125,594" stroke="#15182a" stroke-width="2.5" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.18s">
-                    <path d="M 119,592 Q 120,581 125,579 Q 130,581 131,592 Q 129,600 125,602 Q 121,600 119,592 Z"
-                        fill="#d04060" />
-                    <path d="M 121,591 Q 122,584 125,582 Q 128,584 129,591 Z" fill="#e05270" opacity="0.7" />
-                </g>
-                <g class="bl" style="animation-delay:1.5s">
-                    <path d="M 148,574 Q 120,547 124,522 Q 128,503 148,508 Q 168,503 172,522 Q 176,547 148,574 Z"
-                        fill="#c83025" />
-                    <path d="M 148,574 Q 120,557 113,536 Q 108,516 128,514 Q 140,512 148,524 Z" fill="#b52820" />
-                    <path d="M 148,574 Q 176,557 183,536 Q 188,516 168,514 Q 156,512 148,524 Z" fill="#b52820" />
-                    <path d="M 148,574 Q 132,549 134,528 Q 136,513 148,518 Z" fill="#e04030" opacity="0.48" />
-                    <circle cx="148" cy="545" r="14" fill="#1a2030" />
-                    <circle cx="143" cy="541" r="2.2" fill="white" />
-                    <circle cx="153" cy="541" r="2.2" fill="white" />
-                    <circle cx="148" cy="538" r="2.2" fill="white" />
-                    <circle cx="142" cy="547" r="1.8" fill="white" />
-                    <circle cx="154" cy="547" r="1.8" fill="white" />
-                    <circle cx="148" cy="552" r="1.8" fill="white" />
+                <path d="M 148,695 C 146,660 144,620 146,580" stroke="#1a4420" stroke-width="4" fill="none" stroke-linecap="round" />
+                <ellipse cx="138" cy="640" rx="16" ry="4.5" fill="#1a4420" transform="rotate(-30,138,640)" />
+                <ellipse cx="156" cy="618" rx="14" ry="4" fill="#1e5028" transform="rotate(25,156,618)" />
+                <ellipse cx="140" cy="598" rx="12" ry="3.5" fill="#1a4420" transform="rotate(-20,140,598)" />
+                <g class="bl tiger-lily-bloom" style="animation-delay:1.5s">
+                    <g transform="translate(146,580)">
+                        <path class="tiger-petal tp1" d="M 0,0 C -10,-5 -28,-16 -32,-34 C -34,-42 -26,-48 -16,-44 C -8,-40 -2,-20 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp2" d="M 0,0 C 10,-5 28,-16 32,-34 C 34,-42 26,-48 16,-44 C 8,-40 2,-20 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp3" d="M 0,0 C -4,-8 -5,-26 0,-42 C 3,-48 8,-50 10,-46 C 12,-42 7,-22 0,0 Z" fill="url(#gOrientalWhite)" />
+                        <path class="tiger-petal tp4" d="M 0,0 C -12,-3 -30,-10 -36,-22 C -40,-30 -34,-38 -22,-36 C -12,-34 -4,-16 0,0 Z" fill="url(#gOrientalCrimson)" />
+                        <path class="tiger-petal tp5" d="M 0,0 C 12,-3 30,-10 36,-22 C 40,-30 34,-38 22,-36 C 12,-34 4,-16 0,0 Z" fill="url(#gOrientalCrimson)" />
+                        <path class="tiger-petal tp6" d="M 0,0 C 3,-10 3,-24 -2,-38 C -4,-44 -10,-46 -10,-40 C -10,-34 -5,-16 0,0 Z" fill="url(#gOrientalWhite)" />
+                        <!-- Crimson speckles -->
+                        <circle cx="-14" cy="-20" r="1" fill="#6a1028" /><circle cx="-20" cy="-28" r="0.8" fill="#6a1028" />
+                        <circle cx="14" cy="-20" r="1" fill="#6a1028" /><circle cx="20" cy="-28" r="0.8" fill="#6a1028" />
+                        <circle cx="-8" cy="-14" r="0.9" fill="#6a1028" /><circle cx="8" cy="-14" r="0.9" fill="#6a1028" />
+                        <!-- Stamens -->
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-16" y2="-42" stroke="#d4b870" stroke-width="0.8" />
+                            <ellipse cx="-17" cy="-44" rx="2.2" ry="1.4" fill="#8a3020" transform="rotate(-20,-17,-44)" />
+                            <line x1="0" y1="0" x2="0" y2="-46" stroke="#d4b870" stroke-width="0.8" />
+                            <ellipse cx="0" cy="-48" rx="2.2" ry="1.4" fill="#8a3020" />
+                            <line x1="0" y1="0" x2="16" y2="-42" stroke="#d4b870" stroke-width="0.8" />
+                            <ellipse cx="17" cy="-44" rx="2.2" ry="1.4" fill="#8a3020" transform="rotate(20,17,-44)" />
+                            <line x1="0" y1="0" x2="-10" y2="-44" stroke="#d4b870" stroke-width="0.8" />
+                            <ellipse cx="-11" cy="-46" rx="2" ry="1.2" fill="#8a3020" transform="rotate(-10,-11,-46)" />
+                            <line x1="0" y1="0" x2="10" y2="-44" stroke="#d4b870" stroke-width="0.8" />
+                            <ellipse cx="11" cy="-46" rx="2" ry="1.2" fill="#8a3020" transform="rotate(10,11,-46)" />
+                        </g>
+                        <line x1="0" y1="0" x2="0" y2="-50" stroke="#6aaa40" stroke-width="1.2" />
+                        <circle cx="0" cy="-51" r="2.2" fill="#4a8a28" />
+                    </g>
                 </g>
             </g>
 
+            <!-- ── ORIENTAL LILY 2 (crimson, right) ── -->
             <g class="sw4" style="animation-delay:0.78s">
-                <path d="M 262,692 C 260,654 258,618 255,577" stroke="#15182a" stroke-width="4" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:1.72s">
-                    <path d="M 255,577 Q 227,550 231,526 Q 235,507 255,512 Q 275,507 279,526 Q 283,550 255,577 Z"
-                        fill="#c83025" />
-                    <path d="M 255,577 Q 227,560 220,540 Q 215,520 235,518 Q 247,516 255,527 Z" fill="#b52820" />
-                    <path d="M 255,577 Q 283,560 290,540 Q 295,520 275,518 Q 263,516 255,527 Z" fill="#b52820" />
-                    <circle cx="255" cy="549" r="13" fill="#1a2030" />
-                    <circle cx="250" cy="545" r="2" fill="white" />
-                    <circle cx="260" cy="545" r="2" fill="white" />
-                    <circle cx="255" cy="542" r="2" fill="white" />
-                    <circle cx="249" cy="551" r="1.7" fill="white" />
-                    <circle cx="261" cy="551" r="1.7" fill="white" />
+                <path d="M 262,695 C 260,658 258,622 256,585" stroke="#1a4420" stroke-width="4" fill="none" stroke-linecap="round" />
+                <ellipse cx="252" cy="650" rx="15" ry="4" fill="#1a4420" transform="rotate(-28,252,650)" />
+                <ellipse cx="268" cy="632" rx="14" ry="3.5" fill="#1e5028" transform="rotate(24,268,632)" />
+                <ellipse cx="254" cy="612" rx="12" ry="3" fill="#1a4420" transform="rotate(-22,254,612)" />
+                <g class="bl tiger-lily-bloom" style="animation-delay:1.72s">
+                    <g transform="translate(256,585) scale(0.9,0.9)">
+                        <path class="tiger-petal tp2" d="M 0,0 C -10,-5 -28,-16 -32,-34 C -34,-42 -26,-48 -16,-44 C -8,-40 -2,-20 0,0 Z" fill="url(#gOrientalCrimson)" />
+                        <path class="tiger-petal tp1" d="M 0,0 C 10,-5 28,-16 32,-34 C 34,-42 26,-48 16,-44 C 8,-40 2,-20 0,0 Z" fill="url(#gOrientalCrimson)" />
+                        <path class="tiger-petal tp4" d="M 0,0 C -4,-8 -5,-26 0,-42 C 3,-48 8,-50 10,-46 C 12,-42 7,-22 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp3" d="M 0,0 C -12,-3 -30,-10 -36,-22 C -40,-30 -34,-38 -22,-36 C -12,-34 -4,-16 0,0 Z" fill="url(#gOrientalDeep)" />
+                        <path class="tiger-petal tp6" d="M 0,0 C 12,-3 30,-10 36,-22 C 40,-30 34,-38 22,-36 C 12,-34 4,-16 0,0 Z" fill="url(#gOrientalDeep)" />
+                        <path class="tiger-petal tp5" d="M 0,0 C 3,-10 3,-24 -2,-38 C -4,-44 -10,-46 -10,-40 C -10,-34 -5,-16 0,0 Z" fill="url(#gOrientalPink)" />
+                        <circle cx="-16" cy="-18" r="0.9" fill="#50101e" /><circle cx="16" cy="-18" r="0.9" fill="#50101e" />
+                        <circle cx="-22" cy="-26" r="0.7" fill="#50101e" /><circle cx="22" cy="-26" r="0.7" fill="#50101e" />
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-14" y2="-40" stroke="#d4b870" stroke-width="0.7" />
+                            <ellipse cx="-15" cy="-42" rx="2" ry="1.2" fill="#7a2818" transform="rotate(-18,-15,-42)" />
+                            <line x1="0" y1="0" x2="0" y2="-44" stroke="#d4b870" stroke-width="0.7" />
+                            <ellipse cx="0" cy="-46" rx="2" ry="1.2" fill="#7a2818" />
+                            <line x1="0" y1="0" x2="14" y2="-40" stroke="#d4b870" stroke-width="0.7" />
+                            <ellipse cx="15" cy="-42" rx="2" ry="1.2" fill="#7a2818" transform="rotate(18,15,-42)" />
+                        </g>
+                        <line x1="0" y1="0" x2="0" y2="-48" stroke="#6aaa40" stroke-width="1" />
+                        <circle cx="0" cy="-49" r="2" fill="#4a8a28" />
+                    </g>
                 </g>
             </g>
 
+            <!-- ── ORIENTAL LILY 3 (small pink, far left) ── -->
             <g class="sw2" style="animation-delay:1.48s">
-                <path d="M 82,692 C 80,660 78,628 76,596" stroke="#15182a" stroke-width="3.5" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.42s">
-                    <path d="M 76,596 Q 54,574 57,556 Q 60,540 76,545 Q 92,540 95,556 Q 98,574 76,596 Z"
-                        fill="#c83025" />
-                    <path d="M 76,596 Q 56,580 50,564 Q 46,548 62,546 Q 72,545 76,554 Z" fill="#b52820" />
-                    <path d="M 76,596 Q 96,580 102,564 Q 106,548 90,546 Q 80,545 76,554 Z" fill="#b52820" />
-                    <circle cx="76" cy="570" r="11" fill="#1a2030" />
-                    <circle cx="72" cy="567" r="1.8" fill="white" />
-                    <circle cx="80" cy="567" r="1.8" fill="white" />
-                    <circle cx="76" cy="564" r="1.8" fill="white" />
+                <path d="M 78,698 C 76,668 74,638 72,608" stroke="#1a4420" stroke-width="3" fill="none" stroke-linecap="round" />
+                <ellipse cx="68" cy="660" rx="12" ry="3.5" fill="#1a4420" transform="rotate(-25,68,660)" />
+                <ellipse cx="82" cy="642" rx="11" ry="3" fill="#1e5028" transform="rotate(22,82,642)" />
+                <g class="bl tiger-lily-bloom" style="animation-delay:2.42s">
+                    <g transform="translate(72,608) scale(0.7,0.7)">
+                        <path class="tiger-petal tp3" d="M 0,0 C -10,-5 -28,-16 -32,-34 C -34,-42 -26,-48 -16,-44 C -8,-40 -2,-20 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp4" d="M 0,0 C 10,-5 28,-16 32,-34 C 34,-42 26,-48 16,-44 C 8,-40 2,-20 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp1" d="M 0,0 C -4,-8 -5,-26 0,-42 C 3,-48 8,-50 10,-46 C 12,-42 7,-22 0,0 Z" fill="url(#gOrientalWhite)" />
+                        <path class="tiger-petal tp5" d="M 0,0 C -12,-3 -30,-10 -36,-22 C -40,-30 -34,-38 -22,-36 C -12,-34 -4,-16 0,0 Z" fill="url(#gOrientalCrimson)" />
+                        <path class="tiger-petal tp2" d="M 0,0 C 12,-3 30,-10 36,-22 C 40,-30 34,-38 22,-36 C 12,-34 4,-16 0,0 Z" fill="url(#gOrientalCrimson)" />
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-12" y2="-38" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="-13" cy="-40" rx="1.8" ry="1" fill="#8a3020" />
+                            <line x1="0" y1="0" x2="12" y2="-38" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="13" cy="-40" rx="1.8" ry="1" fill="#8a3020" />
+                            <line x1="0" y1="0" x2="0" y2="-42" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="0" cy="-44" rx="1.8" ry="1" fill="#8a3020" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+
+            <!-- ── ORIENTAL LILY 4 (white-pink, right of center) ── -->
+            <g class="sw3" style="animation-delay:0.3s">
+                <path d="M 228,698 C 226,668 224,640 222,614" stroke="#1a4420" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                <ellipse cx="218" cy="660" rx="13" ry="3.5" fill="#1a4420" transform="rotate(-22,218,660)" />
+                <ellipse cx="230" cy="642" rx="12" ry="3" fill="#1e5028" transform="rotate(20,230,642)" />
+                <g class="bl tiger-lily-bloom" style="animation-delay:1.98s">
+                    <g transform="translate(222,614) scale(0.8,0.8)">
+                        <path class="tiger-petal tp5" d="M 0,0 C -10,-5 -28,-16 -32,-34 C -34,-42 -26,-48 -16,-44 C -8,-40 -2,-20 0,0 Z" fill="url(#gOrientalWhite)" />
+                        <path class="tiger-petal tp6" d="M 0,0 C 10,-5 28,-16 32,-34 C 34,-42 26,-48 16,-44 C 8,-40 2,-20 0,0 Z" fill="url(#gOrientalWhite)" />
+                        <path class="tiger-petal tp2" d="M 0,0 C -4,-8 -5,-26 0,-42 C 3,-48 8,-50 10,-46 C 12,-42 7,-22 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp1" d="M 0,0 C -12,-3 -30,-10 -36,-22 C -40,-30 -34,-38 -22,-36 C -12,-34 -4,-16 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp3" d="M 0,0 C 12,-3 30,-10 36,-22 C 40,-30 34,-38 22,-36 C 12,-34 4,-16 0,0 Z" fill="url(#gOrientalPink)" />
+                        <circle cx="-10" cy="-16" r="0.8" fill="#8a2040" /><circle cx="10" cy="-16" r="0.8" fill="#8a2040" />
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-10" y2="-40" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="-11" cy="-42" rx="1.8" ry="1" fill="#8a3020" />
+                            <line x1="0" y1="0" x2="10" y2="-40" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="11" cy="-42" rx="1.8" ry="1" fill="#8a3020" />
+                            <line x1="0" y1="0" x2="0" y2="-44" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="0" cy="-46" rx="1.8" ry="1" fill="#8a3020" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+
+            <!-- ── ORIENTAL LILY 5 (small crimson, far right) ── -->
+            <g class="sw1" style="animation-delay:1.08s">
+                <path d="M 330,698 C 328,668 326,640 324,614" stroke="#1a4420" stroke-width="3" fill="none" stroke-linecap="round" />
+                <ellipse cx="320" cy="656" rx="12" ry="3.5" fill="#1a4420" transform="rotate(-24,320,656)" />
+                <ellipse cx="334" cy="638" rx="11" ry="3" fill="#1e5028" transform="rotate(22,334,638)" />
+                <g class="bl tiger-lily-bloom" style="animation-delay:2.18s">
+                    <g transform="translate(324,614) scale(0.75,0.75)">
+                        <path class="tiger-petal tp4" d="M 0,0 C -10,-5 -28,-16 -32,-34 C -34,-42 -26,-48 -16,-44 C -8,-40 -2,-20 0,0 Z" fill="url(#gOrientalDeep)" />
+                        <path class="tiger-petal tp3" d="M 0,0 C 10,-5 28,-16 32,-34 C 34,-42 26,-48 16,-44 C 8,-40 2,-20 0,0 Z" fill="url(#gOrientalDeep)" />
+                        <path class="tiger-petal tp6" d="M 0,0 C -4,-8 -5,-26 0,-42 C 3,-48 8,-50 10,-46 C 12,-42 7,-22 0,0 Z" fill="url(#gOrientalCrimson)" />
+                        <path class="tiger-petal tp1" d="M 0,0 C -12,-3 -30,-10 -36,-22 C -40,-30 -34,-38 -22,-36 C -12,-34 -4,-16 0,0 Z" fill="url(#gOrientalPink)" />
+                        <path class="tiger-petal tp5" d="M 0,0 C 12,-3 30,-10 36,-22 C 40,-30 34,-38 22,-36 C 12,-34 4,-16 0,0 Z" fill="url(#gOrientalPink)" />
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-10" y2="-38" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="-11" cy="-40" rx="1.8" ry="1" fill="#7a2818" />
+                            <line x1="0" y1="0" x2="10" y2="-38" stroke="#d4b870" stroke-width="0.6" />
+                            <ellipse cx="11" cy="-40" rx="1.8" ry="1" fill="#7a2818" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+
+            <!-- ── EXTRA TIGER LILY 3 (far left, small) ── -->
+            <g class="sw3" style="animation-delay:0.9s">
+                <path d="M 38,700 C 36,672 34,644 32,618" stroke="#1a4420" stroke-width="3" fill="none" stroke-linecap="round" />
+                <ellipse cx="28" cy="668" rx="11" ry="3" fill="#1a4420" transform="rotate(-28,28,668)" />
+                <ellipse cx="40" cy="650" rx="10" ry="2.8" fill="#1e5028" transform="rotate(24,40,650)" />
+                <g class="bl tiger-lily-bloom" style="animation-delay:2.6s">
+                    <g transform="translate(32,618) scale(0.65,0.65)">
+                        <path class="tiger-petal tp2" d="M 0,0 C -8,-4 -22,-14 -26,-28 C -28,-36 -22,-42 -14,-38 C -6,-34 -2,-18 0,0 Z" fill="url(#gTigerPetal)" />
+                        <circle cx="-14" cy="-22" r="1.2" fill="#3a1a0a" /><circle cx="-18" cy="-28" r="1" fill="#3a1a0a" />
+                        <path class="tiger-petal tp1" d="M 0,0 C 8,-4 22,-14 26,-28 C 28,-36 22,-42 14,-38 C 6,-34 2,-18 0,0 Z" fill="url(#gTigerPetal)" />
+                        <circle cx="14" cy="-22" r="1.2" fill="#3a1a0a" /><circle cx="18" cy="-28" r="1" fill="#3a1a0a" />
+                        <path class="tiger-petal tp4" d="M 0,0 C -10,-2 -24,-8 -30,-18 C -34,-26 -28,-32 -18,-30 C -10,-28 -4,-14 0,0 Z" fill="url(#gTigerPetalDeep)" />
+                        <circle cx="-16" cy="-14" r="1" fill="#3a1a0a" />
+                        <path class="tiger-petal tp5" d="M 0,0 C 10,-2 24,-8 30,-18 C 34,-26 28,-32 18,-30 C 10,-28 4,-14 0,0 Z" fill="url(#gTigerPetalDeep)" />
+                        <circle cx="16" cy="-14" r="1" fill="#3a1a0a" />
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-14" y2="-36" stroke="#c4a050" stroke-width="0.7" />
+                            <ellipse cx="-15" cy="-38" rx="1.8" ry="1" fill="#6b2e10" />
+                            <line x1="0" y1="0" x2="14" y2="-36" stroke="#c4a050" stroke-width="0.7" />
+                            <ellipse cx="15" cy="-38" rx="1.8" ry="1" fill="#6b2e10" />
+                            <line x1="0" y1="0" x2="0" y2="-40" stroke="#c4a050" stroke-width="0.7" />
+                            <ellipse cx="0" cy="-42" rx="1.8" ry="1" fill="#6b2e10" />
+                        </g>
+                    </g>
+                </g>
+            </g>
+
+            <!-- ── EXTRA TIGER LILY 4 (far right, medium) ── -->
+            <g class="sw4" style="animation-delay:1.4s">
+                <path d="M 370,700 C 368,670 366,640 364,612" stroke="#1a4420" stroke-width="3.5" fill="none" stroke-linecap="round" />
+                <ellipse cx="360" cy="664" rx="13" ry="3.5" fill="#1a4420" transform="rotate(-26,360,664)" />
+                <ellipse cx="374" cy="646" rx="12" ry="3" fill="#1e5028" transform="rotate(22,374,646)" />
+                <g class="bl tiger-lily-bloom" style="animation-delay:2.3s">
+                    <g transform="translate(364,612) scale(0.8,0.8) scale(-1,1)">
+                        <path class="tiger-petal tp3" d="M 0,0 C -8,-4 -22,-14 -26,-28 C -28,-36 -22,-42 -14,-38 C -6,-34 -2,-18 0,0 Z" fill="url(#gTigerPetal)" />
+                        <circle cx="-14" cy="-22" r="1.2" fill="#3a1a0a" /><circle cx="-18" cy="-28" r="1" fill="#3a1a0a" />
+                        <circle cx="-10" cy="-16" r="1.1" fill="#3a1a0a" />
+                        <path class="tiger-petal tp6" d="M 0,0 C 8,-4 22,-14 26,-28 C 28,-36 22,-42 14,-38 C 6,-34 2,-18 0,0 Z" fill="url(#gTigerPetal)" />
+                        <circle cx="14" cy="-22" r="1.2" fill="#3a1a0a" /><circle cx="18" cy="-28" r="1" fill="#3a1a0a" />
+                        <path class="tiger-petal tp1" d="M 0,0 C -10,-2 -24,-8 -30,-18 C -34,-26 -28,-32 -18,-30 C -10,-28 -4,-14 0,0 Z" fill="url(#gTigerPetalDeep)" />
+                        <circle cx="-16" cy="-14" r="1.1" fill="#3a1a0a" />
+                        <path class="tiger-petal tp4" d="M 0,0 C 10,-2 24,-8 30,-18 C 34,-26 28,-32 18,-30 C 10,-28 4,-14 0,0 Z" fill="url(#gTigerPetalDeep)" />
+                        <circle cx="16" cy="-14" r="1.1" fill="#3a1a0a" />
+                        <path class="tiger-petal tp2" d="M 0,0 C -3,-6 -4,-22 0,-36 C 2,-42 6,-44 8,-40 C 10,-36 6,-20 0,0 Z" fill="url(#gTigerPetalLight)" />
+                        <circle cx="2" cy="-20" r="0.9" fill="#3a1a0a" />
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-16" y2="-38" stroke="#c4a050" stroke-width="0.7" />
+                            <ellipse cx="-17" cy="-40" rx="2" ry="1.1" fill="#6b2e10" />
+                            <line x1="0" y1="0" x2="16" y2="-38" stroke="#c4a050" stroke-width="0.7" />
+                            <ellipse cx="17" cy="-40" rx="2" ry="1.1" fill="#6b2e10" />
+                            <line x1="0" y1="0" x2="0" y2="-42" stroke="#c4a050" stroke-width="0.7" />
+                            <ellipse cx="0" cy="-44" rx="2" ry="1.1" fill="#6b2e10" />
+                            <line x1="0" y1="0" x2="-8" y2="-40" stroke="#c4a050" stroke-width="0.7" />
+                            <ellipse cx="-9" cy="-42" rx="1.8" ry="1" fill="#6b2e10" />
+                        </g>
+                        <line x1="0" y1="0" x2="0" y2="-46" stroke="#8aad5a" stroke-width="1" />
+                        <circle cx="0" cy="-47" r="1.6" fill="#5a8a30" />
+                    </g>
+                </g>
+            </g>
+
+            <!-- ── CENTER HERO TIGER LILY (focal point) ── -->
+            <g class="sw2" style="animation-delay:0.35s">
+                <!-- Tall central stem -->
+                <path d="M 195,700 C 194,670 193,638 192,604 C 191,578 190,550 188,528 C 186,510 184,492 180,475"
+                    stroke="#1a4420" stroke-width="4.5" fill="none" stroke-linecap="round" />
+                <!-- Lance-shaped leaves -->
+                <ellipse cx="184" cy="660" rx="20" ry="5.5" fill="#1a4420" transform="rotate(-32,184,660)" />
+                <ellipse cx="204" cy="642" rx="18" ry="5" fill="#1e5028" transform="rotate(28,204,642)" />
+                <ellipse cx="186" cy="622" rx="17" ry="4.5" fill="#1a4420" transform="rotate(-26,186,622)" />
+                <ellipse cx="202" cy="602" rx="15" ry="4" fill="#1e5028" transform="rotate(24,202,602)" />
+                <ellipse cx="188" cy="582" rx="14" ry="3.5" fill="#1a4420" transform="rotate(-20,188,582)" />
+                <ellipse cx="200" cy="562" rx="13" ry="3.5" fill="#1e5028" transform="rotate(18,200,562)" />
+                <ellipse cx="186" cy="542" rx="12" ry="3" fill="#1a4420" transform="rotate(-16,186,542)" />
+                <ellipse cx="196" cy="520" rx="11" ry="3" fill="#1e5028" transform="rotate(14,196,520)" />
+                <ellipse cx="184" cy="500" rx="10" ry="2.8" fill="#1a4420" transform="rotate(-12,184,500)" />
+
+                <!-- Hero flower (large, prominent) -->
+                <g class="bl tiger-lily-bloom" style="animation-delay:1.2s">
+                    <g transform="translate(180,475) scale(1.15,1.15)">
+                        <!-- Petal 1 — back left -->
+                        <path class="tiger-petal tp1" d="M 0,0 C -8,-4 -22,-14 -26,-28 C -28,-36 -22,-42 -14,-38 C -6,-34 -2,-18 0,0 Z" fill="url(#gTigerPetal)" />
+                        <circle cx="-14" cy="-22" r="1.2" fill="#3a1a0a" /><circle cx="-18" cy="-28" r="1" fill="#3a1a0a" />
+                        <circle cx="-10" cy="-16" r="1.1" fill="#3a1a0a" /><circle cx="-20" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="-12" cy="-30" r="0.8" fill="#3a1a0a" /><circle cx="-16" cy="-12" r="1" fill="#3a1a0a" />
+                        <circle cx="-22" cy="-24" r="0.7" fill="#3a1a0a" />
+                        <!-- Petal 2 — back right -->
+                        <path class="tiger-petal tp2" d="M 0,0 C 8,-4 22,-14 26,-28 C 28,-36 22,-42 14,-38 C 6,-34 2,-18 0,0 Z" fill="url(#gTigerPetal)" />
+                        <circle cx="14" cy="-22" r="1.2" fill="#3a1a0a" /><circle cx="18" cy="-28" r="1" fill="#3a1a0a" />
+                        <circle cx="10" cy="-16" r="1.1" fill="#3a1a0a" /><circle cx="20" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="12" cy="-30" r="0.8" fill="#3a1a0a" /><circle cx="16" cy="-12" r="1" fill="#3a1a0a" />
+                        <!-- Petal 3 — center back -->
+                        <path class="tiger-petal tp3" d="M 0,0 C -3,-6 -4,-22 0,-36 C 2,-42 6,-44 8,-40 C 10,-36 6,-20 0,0 Z" fill="url(#gTigerPetalLight)" />
+                        <circle cx="2" cy="-20" r="1" fill="#3a1a0a" /><circle cx="-1" cy="-28" r="0.9" fill="#3a1a0a" />
+                        <circle cx="4" cy="-14" r="0.8" fill="#3a1a0a" /><circle cx="1" cy="-32" r="0.7" fill="#3a1a0a" />
+                        <!-- Petal 4 — front left -->
+                        <path class="tiger-petal tp4" d="M 0,0 C -10,-2 -24,-8 -30,-18 C -34,-26 -28,-32 -18,-30 C -10,-28 -4,-14 0,0 Z" fill="url(#gTigerPetalDeep)" />
+                        <circle cx="-16" cy="-14" r="1.1" fill="#3a1a0a" /><circle cx="-22" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="-12" cy="-10" r="1" fill="#3a1a0a" /><circle cx="-24" cy="-22" r="0.8" fill="#3a1a0a" />
+                        <!-- Petal 5 — front right -->
+                        <path class="tiger-petal tp5" d="M 0,0 C 10,-2 24,-8 30,-18 C 34,-26 28,-32 18,-30 C 10,-28 4,-14 0,0 Z" fill="url(#gTigerPetalDeep)" />
+                        <circle cx="16" cy="-14" r="1.1" fill="#3a1a0a" /><circle cx="22" cy="-18" r="0.9" fill="#3a1a0a" />
+                        <circle cx="12" cy="-10" r="1" fill="#3a1a0a" /><circle cx="24" cy="-22" r="0.8" fill="#3a1a0a" />
+                        <!-- Petal 6 — front center -->
+                        <path class="tiger-petal tp6" d="M 0,0 C 2,-8 2,-20 -2,-32 C -4,-38 -8,-40 -8,-34 C -8,-28 -4,-14 0,0 Z" fill="url(#gTigerPetalLight)" />
+                        <circle cx="-2" cy="-18" r="0.9" fill="#3a1a0a" /><circle cx="0" cy="-26" r="0.8" fill="#3a1a0a" />
+                        <circle cx="-4" cy="-12" r="0.7" fill="#3a1a0a" />
+                        <!-- Stamens -->
+                        <g class="tiger-stamens">
+                            <line x1="0" y1="0" x2="-18" y2="-38" stroke="#c4a050" stroke-width="0.9" />
+                            <ellipse cx="-19" cy="-40" rx="2.2" ry="1.4" fill="#6b2e10" transform="rotate(-25,-19,-40)" />
+                            <line x1="0" y1="0" x2="-8" y2="-40" stroke="#c4a050" stroke-width="0.9" />
+                            <ellipse cx="-9" cy="-42" rx="2.2" ry="1.4" fill="#6b2e10" transform="rotate(-10,-9,-42)" />
+                            <line x1="0" y1="0" x2="4" y2="-42" stroke="#c4a050" stroke-width="0.9" />
+                            <ellipse cx="4" cy="-44" rx="2.2" ry="1.4" fill="#6b2e10" transform="rotate(5,4,-44)" />
+                            <line x1="0" y1="0" x2="14" y2="-40" stroke="#c4a050" stroke-width="0.9" />
+                            <ellipse cx="15" cy="-42" rx="2.2" ry="1.4" fill="#6b2e10" transform="rotate(18,15,-42)" />
+                            <line x1="0" y1="0" x2="20" y2="-36" stroke="#c4a050" stroke-width="0.9" />
+                            <ellipse cx="21" cy="-38" rx="2.2" ry="1.4" fill="#6b2e10" transform="rotate(28,21,-38)" />
+                            <line x1="0" y1="0" x2="-22" y2="-32" stroke="#c4a050" stroke-width="0.9" />
+                            <ellipse cx="-23" cy="-34" rx="2.2" ry="1.4" fill="#6b2e10" transform="rotate(-35,-23,-34)" />
+                        </g>
+                        <!-- Pistil -->
+                        <line x1="0" y1="0" x2="0" y2="-46" stroke="#8aad5a" stroke-width="1.2" />
+                        <circle cx="0" cy="-47" r="2" fill="#5a8a30" />
+                    </g>
                 </g>
             </g>
 
             <!-- ═══════════════════════════════════════════════════
-       PINK FLOWERS
+       GROUND TEXTURE — grass blades, fallen petals, mossy clumps
        ═══════════════════════════════════════════════════ -->
 
-            <g class="sw3" style="animation-delay:0.3s">
-                <path d="M 196,692 C 194,664 192,637 190,610" stroke="#15182a" stroke-width="3.5" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:1.98s">
-                    <path d="M 190,610 Q 172,593 175,576 Q 178,562 190,567 Q 202,562 205,576 Q 208,593 190,610 Z"
-                        fill="#e05570" />
-                    <path d="M 190,610 Q 174,598 170,583 Q 167,570 180,568 Q 187,566 190,575 Z" fill="#c84060" />
-                    <path d="M 190,610 Q 206,598 210,583 Q 213,570 200,568 Q 193,566 190,575 Z" fill="#c84060" />
-                    <path d="M 190,610 Q 180,597 182,583 Q 184,573 190,575 Q 196,573 198,583 Q 200,597 190,610 Z"
-                        fill="#e06880" opacity="0.78" />
-                    <circle cx="190" cy="584" r="7" fill="#2a1830" />
-                    <circle cx="187" cy="581" r="1.5" fill="white" />
-                    <circle cx="193" cy="581" r="1.5" fill="white" />
-                    <circle cx="190" cy="579" r="1.5" fill="white" />
-                </g>
+            <!-- Grass blades (thin angled lines across bottom) -->
+            <g opacity="0.6">
+                <!-- Left cluster -->
+                <line x1="12" y1="700" x2="8" y2="682" stroke="#0e3018" stroke-width="1.2" stroke-linecap="round" />
+                <line x1="18" y1="700" x2="22" y2="685" stroke="#103820" stroke-width="1" stroke-linecap="round" />
+                <line x1="25" y1="700" x2="20" y2="688" stroke="#0c2814" stroke-width="0.8" stroke-linecap="round" />
+                <line x1="32" y1="700" x2="36" y2="684" stroke="#0e3018" stroke-width="1.1" stroke-linecap="round" />
+                <line x1="40" y1="700" x2="38" y2="690" stroke="#103820" stroke-width="0.9" stroke-linecap="round" />
+                <!-- Left-center cluster -->
+                <line x1="88" y1="700" x2="84" y2="684" stroke="#0e3018" stroke-width="1" stroke-linecap="round" />
+                <line x1="95" y1="700" x2="100" y2="686" stroke="#103820" stroke-width="1.2" stroke-linecap="round" />
+                <line x1="104" y1="700" x2="100" y2="690" stroke="#0c2814" stroke-width="0.8" stroke-linecap="round" />
+                <line x1="110" y1="700" x2="114" y2="688" stroke="#0e3018" stroke-width="1" stroke-linecap="round" />
+                <!-- Center-left -->
+                <line x1="158" y1="700" x2="154" y2="686" stroke="#103820" stroke-width="1.1" stroke-linecap="round" />
+                <line x1="166" y1="700" x2="170" y2="688" stroke="#0e3018" stroke-width="0.9" stroke-linecap="round" />
+                <line x1="174" y1="700" x2="172" y2="692" stroke="#0c2814" stroke-width="0.8" stroke-linecap="round" />
+                <!-- Center -->
+                <line x1="210" y1="700" x2="206" y2="685" stroke="#0e3018" stroke-width="1.2" stroke-linecap="round" />
+                <line x1="218" y1="700" x2="222" y2="688" stroke="#103820" stroke-width="1" stroke-linecap="round" />
+                <line x1="226" y1="700" x2="224" y2="692" stroke="#0c2814" stroke-width="0.8" stroke-linecap="round" />
+                <!-- Center-right -->
+                <line x1="248" y1="700" x2="244" y2="686" stroke="#103820" stroke-width="1" stroke-linecap="round" />
+                <line x1="256" y1="700" x2="260" y2="688" stroke="#0e3018" stroke-width="1.1" stroke-linecap="round" />
+                <line x1="264" y1="700" x2="262" y2="692" stroke="#0c2814" stroke-width="0.9" stroke-linecap="round" />
+                <!-- Right cluster -->
+                <line x1="300" y1="700" x2="296" y2="684" stroke="#0e3018" stroke-width="1.2" stroke-linecap="round" />
+                <line x1="308" y1="700" x2="312" y2="687" stroke="#103820" stroke-width="1" stroke-linecap="round" />
+                <line x1="316" y1="700" x2="314" y2="691" stroke="#0c2814" stroke-width="0.8" stroke-linecap="round" />
+                <!-- Far right cluster -->
+                <line x1="350" y1="700" x2="346" y2="685" stroke="#0e3018" stroke-width="1" stroke-linecap="round" />
+                <line x1="358" y1="700" x2="362" y2="688" stroke="#103820" stroke-width="1.1" stroke-linecap="round" />
+                <line x1="366" y1="700" x2="364" y2="692" stroke="#0c2814" stroke-width="0.8" stroke-linecap="round" />
+                <line x1="378" y1="700" x2="382" y2="686" stroke="#0e3018" stroke-width="1" stroke-linecap="round" />
             </g>
 
-            <g class="sw1" style="animation-delay:1.78s">
-                <path d="M 232,690 C 231,665 230,643 228,622" stroke="#15182a" stroke-width="3" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.82s">
-                    <path d="M 228,622 Q 216,610 218,599 Q 220,590 228,593 Q 236,590 238,599 Q 240,610 228,622 Z"
-                        fill="#e06080" />
-                    <path d="M 228,622 Q 220,613 221,602 Q 222,595 228,597 Q 234,595 235,602 Q 236,613 228,622 Z"
-                        fill="#c84868" opacity="0.8" />
-                    <circle cx="228" cy="601" r="5" fill="#2a1830" />
-                </g>
+            <!-- Fallen petals (tiny curved shapes on ground) -->
+            <g opacity="0.45">
+                <!-- Orange tiger lily petals -->
+                <ellipse cx="55" cy="694" rx="4" ry="1.8" fill="#d06820" transform="rotate(-35,55,694)" />
+                <ellipse cx="160" cy="696" rx="3.5" ry="1.5" fill="#c85818" transform="rotate(20,160,696)" />
+                <ellipse cx="340" cy="693" rx="4" ry="1.8" fill="#d06820" transform="rotate(-15,340,693)" />
+                <!-- Pink oriental petals -->
+                <ellipse cx="120" cy="695" rx="3.5" ry="1.6" fill="#c06080" transform="rotate(40,120,695)" />
+                <ellipse cx="230" cy="697" rx="3" ry="1.4" fill="#b85070" transform="rotate(-25,230,697)" />
+                <ellipse cx="290" cy="694" rx="3.5" ry="1.5" fill="#d07090" transform="rotate(30,290,694)" />
+                <!-- Crimson petals -->
+                <ellipse cx="75" cy="697" rx="3" ry="1.3" fill="#a03048" transform="rotate(-42,75,697)" />
+                <ellipse cx="195" cy="698" rx="2.8" ry="1.2" fill="#902838" transform="rotate(18,195,698)" />
             </g>
 
-            <g class="sw4" style="animation-delay:1.08s">
-                <path d="M 316,690 C 314,660 311,632 308,603" stroke="#15182a" stroke-width="3.5" fill="none"
-                    stroke-linecap="round" />
-                <g class="bl" style="animation-delay:2.18s">
-                    <path d="M 308,603 Q 290,586 293,570 Q 296,556 308,561 Q 320,556 323,570 Q 326,586 308,603 Z"
-                        fill="#e05570" />
-                    <path d="M 308,603 Q 292,591 288,576 Q 285,563 298,561 Q 305,559 308,568 Z" fill="#c84060" />
-                    <path d="M 308,603 Q 324,591 328,576 Q 331,563 318,561 Q 311,559 308,568 Z" fill="#c84060" />
-                    <path d="M 308,603 Q 298,590 300,576 Q 302,566 308,568 Q 314,566 316,576 Q 318,590 308,603 Z"
-                        fill="#e06880" opacity="0.7" />
-                    <circle cx="308" cy="574" r="7" fill="#2a1830" />
-                    <circle cx="305" cy="572" r="1.5" fill="white" />
-                    <circle cx="311" cy="572" r="1.5" fill="white" />
-                    <circle cx="308" cy="570" r="1.5" fill="white" />
-                </g>
+            <!-- Mossy ground clumps (small organic shapes) -->
+            <g opacity="0.35">
+                <ellipse cx="45" cy="698" rx="8" ry="3" fill="#0a2818" transform="rotate(-5,45,698)" />
+                <ellipse cx="135" cy="697" rx="10" ry="3.5" fill="#0c3020" transform="rotate(3,135,697)" />
+                <ellipse cx="245" cy="698" rx="9" ry="3" fill="#0a2818" transform="rotate(-4,245,698)" />
+                <ellipse cx="320" cy="697" rx="7" ry="2.8" fill="#0c3020" transform="rotate(6,320,697)" />
+                <ellipse cx="385" cy="698" rx="8" ry="3" fill="#0a2818" transform="rotate(-3,385,698)" />
+                <ellipse cx="5" cy="697" rx="6" ry="2.5" fill="#0c3020" transform="rotate(4,5,697)" />
+            </g>
+
+            <!-- Tiny ground-level buds and sprouts -->
+            <g opacity="0.5">
+                <path d="M 65,700 C 64,696 62,692 60,690" stroke="#103818" stroke-width="0.8" fill="none" stroke-linecap="round" />
+                <ellipse cx="59" cy="689" rx="2.5" ry="1.5" fill="#0e3018" transform="rotate(-30,59,689)" />
+                <path d="M 185,700 C 184,695 182,691 180,688" stroke="#103818" stroke-width="0.8" fill="none" stroke-linecap="round" />
+                <ellipse cx="179" cy="687" rx="2.5" ry="1.5" fill="#0e3018" transform="rotate(-25,179,687)" />
+                <path d="M 280,700 C 281,696 283,692 285,690" stroke="#103818" stroke-width="0.8" fill="none" stroke-linecap="round" />
+                <ellipse cx="286" cy="689" rx="2.5" ry="1.5" fill="#0e3018" transform="rotate(30,286,689)" />
+                <path d="M 355,700 C 354,695 352,691 350,688" stroke="#103818" stroke-width="0.8" fill="none" stroke-linecap="round" />
+                <ellipse cx="349" cy="687" rx="2.5" ry="1.5" fill="#0e3018" transform="rotate(-28,349,687)" />
             </g>
 
             <!-- ─── GRAIN OVERLAY ─────────────────────────────── -->
